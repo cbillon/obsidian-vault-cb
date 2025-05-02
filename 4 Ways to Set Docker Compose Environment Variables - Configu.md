@@ -3,10 +3,13 @@ link: https://configu.com/blog/4-ways-to-set-docker-compose-environment-variable
 byline: Geva Perry
 site: Configu - Rethinking Configuration Management
 date: 2024-04-14T20:36
-excerpt: Environment variables in Docker Compose are dynamic values that can
-  influence the behavior of applications running inside containers.
+excerpt: Environment variables in Docker Compose are dynamic values that can influence the behavior of applications running inside containers.
 slurped: 2024-07-01T12:02
 title: 4 Ways to Set Docker Compose Environment Variables - Configu
+tags:
+  - docker-compose
+  - env
+  - variable
 ---
 
 [Environment variables](https://configu.com/blog/environment-variables-how-to-use-them-and-4-critical-best-practices/) in Docker Compose are dynamic values that can influence the behavior of applications running inside containers. They allow for the configuration of containerized applications in different environments without altering the Dockerfile or application code. 
