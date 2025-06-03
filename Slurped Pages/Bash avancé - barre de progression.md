@@ -12,7 +12,6 @@ tags:
   - substitution
 slurped: 2024-12-19T08:31
 title: "Bash avancé: barre de progression"
-"tags:": bash
 ---
 #bash 
 Après [les messages](https://xieme-art.org/post/bash-avance-gerer-les-messages/) et [les signaux](https://xieme-art.org/post/bash-avance-its-a-trap/), voici enfin un nouvel article dans la série **Bash avancé**. Avec presque deux ans de retard, il serait temps me direz-vous! Mais mieux vaut tard que jamais non?
