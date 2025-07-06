@@ -6,6 +6,9 @@ tags:
 ---
 [site](https://shi.foo/weblog/multi-view-interfaces-in-bubble-tea)
 
+[devtui](https://github.com/skatkov/devtui) A swiss army app for devloppers
+[Bubble Tea Two Screens](https://github.com/skatkov/bubbleteaTwoScreens)
+
 
 Recently, I was trying to build a "multi-screen" or "multi-view" application in [Go](https://go.dev/) using the [Bubble Tea](https://github.com/charmbracelet/bubbletea) library. Now, for those who don't know, **Bubble Tea** is a framework for building terminal-based UIs/applications which is based on [The Elm Architecture](https://guide.elm-lang.org/architecture/). Not only this, **Bubble Tea** also ships with a lot of "sister" libraries which can be used to further enhance your experience of building CLI or TUI applications with **Bubble Tea**. [Bubbles](https://github.com/charmbracelet/bubbles) and [Lip Gloss](https://github.com/charmbracelet/lipgloss) are two such libraries which are built on top of **Bubble Tea** and which I am also using through this article.
 ![The Elm Architecture](https://ignis.shi.foo/image/16/theelmarch.png)
