@@ -28,6 +28,10 @@
   "publish": false,
   "sync": false,
   "webviewer": true,
+<<<<<<< Updated upstream
   "footnotes": true,
+=======
+  "footnotes": false,
+>>>>>>> Stashed changes
   "bases": true
 }
