@@ -33,7 +33,7 @@ Nous allons nous concentrer sur la situation de workflow triangulaire, c’est �
 - **Un dépôt local**  
     C’est notre dépôt de travail.
 
-[![](https://i0.wp.com/blogzenika.wpcomstaging.com/wp-content/uploads/2016/12/pr_00_triangular-1.png?resize=800%2C700&ssl=1)](https://i0.wp.com/blogzenika.wpcomstaging.com/wp-content/uploads/2016/12/pr_00_triangular-1.png?ssl=1)  
+![[Local_Upstream_Origin.png]]
 Depuis la version 2.5, Git simplifie le travail avec ce type de workflow avec l’introduction de la référence [<branch>@{push}](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt-emltbranchnamegtpushemegemmasterpushemempushem).  
 Il existe déjà la référence `[<branch>@{upstream}](https://git-scm.com/docs/git-rev-parse#Documentation/git-rev-parse.txt-emltbranchnamegtupstreamemegemmasterupstreamememuem)` qui permet de déterminer la branche distante traquée par une branche. Celle-ci est automatiquement définie lorsque vous faites un `git checkout -b branch upstream_branch` ou peut être explicitement définie par un `git branch --set-upstream-to upstream_branch branch`. Cette référence permet de déterminer la branche avec laquelle fusionner/rebaser lors d’un `git pull`. Elle permet aussi, si votre configuration [`push.default`](https://git-scm.com/docs/git-config#git-config-pushdefault) est à `upstream`, de déterminer la branche vers laquelle publier par défaut lors d’un `git push`.  
 Avec l’apparition de la référence `<branch>@{push}`, il est maintenant possible de mieux contrôler la branche vers laquelle publier par défaut. Celle-ci est configurée par les options de configuration :

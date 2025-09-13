@@ -6,5 +6,6 @@
   "templater-obsidian",
   "obsidian-book-search-plugin",
   "obsidian-dynamic-embed",
-  "obsidian-meta-bind-plugin"
+  "obsidian-meta-bind-plugin",
+  "better-mindmap"
 ]
