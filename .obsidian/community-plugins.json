@@ -1,15 +1,3 @@
 [
-  "slurp",
-  "auto-note-mover",
-  "dataview",
-  "templater-obsidian",
-  "obsidian-book-search-plugin",
-  "obsidian-dynamic-embed",
-  "obsidian-meta-bind-plugin",
-<<<<<<< Updated upstream
-  "better-mindmap"
-=======
-  "tag-wrangler",
-  "obsidian-excalidraw-plugin"
->>>>>>> Stashed changes
+  "slurp"
 ]
