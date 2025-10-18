@@ -1,7 +1,8 @@
 ---
-author: "Edgar Allan Poe"
+author: Edgar Allan Poe
 published: 1845
-tags: poems
+tags:
+  - poems
 ---
 
 # The Raven
