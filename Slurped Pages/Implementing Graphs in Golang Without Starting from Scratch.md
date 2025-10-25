@@ -15,6 +15,7 @@ title: Implementing Graphs in Golang Without Starting from Scratch
 tags:
   - go
   - graph
+  - dag
 ---
 
 Have you ever imagined a world without connections? Think about your social media full of random unknown people in your follow recommendations, maps not showing the shortest direction between two destinations, or file imports turning into a mess of unrelated modules after compiling. This would be hard even to imagine, right?

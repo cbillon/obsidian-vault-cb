@@ -7,6 +7,7 @@ tags:
   - golang
   - tui
   - tips
+  - bubble_tea
 ---
 
 - [0. Intro](#0-intro)
@@ -632,7 +633,7 @@ Note: there is an [open issue](https://github.com/charmbracelet/bubbletea/issues
 
 ## 9. Use teatest for end-to-end tests
 
-For end to end testing of your TUI, Charm have developed [teatest](https://github.com/charmbracelet/x/tree/main/exp/teatest), which they introduced last year in a [blog article](https://charm.sh/blog/teatest/).
+For end to end testing of your TUI, Charm have developed [teatest](https://github.com/charmbracelet/x/tree/main/exp/teatest), which they introduced last year in a [blog arcobbledticle](https://charm.sh/blog/teatest/).
 
 Here’s an program that runs and then quits upon confirmation from the user:
 
