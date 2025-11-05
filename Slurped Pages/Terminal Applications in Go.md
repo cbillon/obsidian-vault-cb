@@ -1,0 +1,847 @@
+---
+link: https://harrisoncramer.me/terminal-applications-in-go/
+excerpt: Charm's BubbleTea library integrates seamlessly with Cobra and Viper to build powerful command line tooling for developers.
+slurped: 2025-11-05T11:37
+title: Terminal Applications in Go
+tags:
+  - go
+  - bubble_tea
+  - tui
+---
+
+Charm's BubbleTea library integrates seamlessly with Cobra and Viper to build powerful command line tooling for developers.
+
+What makes good developer tooling? A few things jump to mind:
+
+- It is fast
+- It’s easy to deploy/use in different environments
+- It’s well documented
+- It’s flexible and configurable, and preferably supports scripting and automation
+
+Considering all of these factors, CLIs (Command Line Interfaces) are arguably the most effective developer tooling out there. As text and keyboard-based tools, CLIs are _far better_ than their GUI counterparts at scripting and automation. Tooling that embraces the [linux philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) is by nature extensible and modular.
+
+All that being said, CLIs are not always approachable for new users. They’re designed to pipe data from one tool to another, not necessarily to hold application state and display options to an indecisive user, who may just be trying to explore the tool.
+
+This is where TUIs, or Terminal User Interfaces, are a relatively interesting middle ground.
+
+While they live in the terminal, they’re more akin to traditional GUI applications in that they display state and respond to user interactions. In fact, by combining CLIs and TUIs we can get the best of both worlds — powerful scripting and automatation capabilities, user-friendliness, and state management!
+
+## What are we building?
+
+This post shows how to build a simple and configurable terminal application with Go for interacting with ChatGPT. The application will present us with a list of choices, and allow us to send our choice to ChatGPT, which will then return an answer to the prompt.
+
+The tool uses [Cobra](https://github.com/spf13/cobra) to set up the command, [Viper](https://github.com/spf13/viper) to load and manage the tool’s configuration, and [Bubbletea](https://github.com/charmbracelet/bubbletea) to build the UI. The tools and strategies used here can be extended to build terminal applications of all kinds.
+
+The full code for this example, which is slightly more expanded than this example, can be found [on my Github](https://github.com/harrisoncramer/joke-gpt).
+
+## Setting up with Cobra and Viper 🐍
+
+Initialize your module first!
+
+```
+mkdir joke-gpt && cd joke-gpt
+go mod init
+touch main.go
+```
+
+Our `main.go` file is very bare bones, as per Cobra’s recommendation.
+
+main.go
+
+```
+package main
+ 
+import (
+	cmd "github.com/harrisoncramer/joke-gpt/cmd"
+)
+ 
+func main() {
+	cmd.Execute()
+}
+```
+
+In our `cmd/root.go` file, we’ll set flag options (in this case a `token` option and a `config` option). When our root command is called, the `cmd` struct is passed as an argument to another function called `initializeConfig` which parses our configuration for the application.
+
+cmd/root.go
+
+```
+package cmd
+ 
+import (
+	"fmt"
+	"os"
+ 
+	app "github.com/harrisoncramer/joke-gpt/app"
+	"github.com/spf13/cobra"
+)
+ 
+/* The init() function is called automatically by Go */
+func init() {
+	rootCmd.PersistentFlags().StringP("token", "t", "", "Token for the ChatGPT API. This value will override a `token` set in your config file. \nIf neither is found, will default to $OPENAI_API_KEY environment variable")
+	rootCmd.PersistentFlags().StringP("config", "", "", "The path to a .yaml configuration file, by default the current directory")
+}
+ 
+var rootCmd = &cobra.Command{
+	Use:   "joke-gpt",
+	Short: "A TUI for interacting with ChatGPT from the command line",
+	Run: func(cmd *cobra.Command, args []string) {
+		pluginConfig, err := parseConfig(cmd)
+		if err != nil {
+			fmt.Printf("Error configuring application: %v", err)
+			os.Exit(1)
+		}
+ 
+		app.PluginConfig = pluginConfig
+		app.Start()
+	},
+}
+ 
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+```
+
+I’ve put the `initializeConfig` function into a separate file called `config.go`. This function loads a YAML file, and unpacks it into the application. Rather than loading and parsing the YAML with a typical reader, we use [Viper](https://github.com/spf13/viper). The library lets use easily set default values, hot reload our configuration when the yaml changes, and has other benefits.
+
+cmd/config.go
+
+```
+package cmd
+ 
+import (
+	"errors"
+	"fmt"
+	"os"
+ 
+	"github.com/harrisoncramer/joke-gpt/shared"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+ 
+/* Sets default configuration options then reads in the configuration file and sets it in the app */
+func parseConfig(cmd *cobra.Command) (shared.PluginConfig, error) {
+	p := shared.PluginConfig{}
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.SetDefault("display.cursor", ">")
+	viper.SetDefault("network.timeout", 2000)
+	viper.SetDefault("keys.up", "k")
+	viper.SetDefault("keys.down", "j")
+	viper.SetDefault("keys.select", "enter")
+	viper.SetDefault("keys.quit", "ctrl+c")
+	viper.SetDefault("keys.back", "esc")
+	viper.BindPFlag("token", cmd.PersistentFlags().Lookup("token"))
+	viper.SetDefault("token", os.Getenv("OPEN_API_KEY"))
+ 
+	/* Look for config file in current directory by default */
+	configFile, _ := cmd.Flags().GetString("config")
+	if configFile == "" {
+		configFile = "."
+	}
+	viper.AddConfigPath(configFile)
+	err := viper.ReadInConfig()
+	if err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			return fmt.Errorf("Fatal error reading configuration file: %v\n", err)
+		}
+	}
+ 
+	if err := viper.Unmarshal(&p); err != nil {
+		return shared.PluginConfig{}, fmt.Errorf("Fatal error unmarshalling configuration file: %v", err)
+	}
+ 
+	if viper.Get("token") == "" {
+		return shared.PluginConfig{}, errors.New("ChatGPT API Key is required!")
+	}
+ 
+	return p, nil
+}
+```
+
+The `shared` package at this point just contains one file, which includes our type for our plugin options. This is the struct that we are unpacking our configuration into. We could also use Viper’s `Get` method, but I like having all of the configuration in one place:
+
+shared/types.go
+
+```
+package shared
+ 
+/* The options for the plugin, read into the application by Viper from a YAML file */
+type PluginOpts struct {
+	Token   string      `mapstructure:"token"`
+	Network NetworkOpts `mapstructure:"network"`
+	Display DisplayOpts `mapstructure:"display"`
+	Keys    KeyOpts     `mapstructure:"keys"`
+}
+ 
+type NetworkOpts struct {
+	Timeout int `mapstructure:"timeout"`
+}
+ 
+type KeyOpts struct {
+	Up     string `mapstructure:"up"`
+	Down   string `mapstructure:"down"`
+	Select string `mapstructure:"select"`
+	Back   string `mapstructure:"back"`
+	Quit   string `mapstructure:"quit"`
+}
+ 
+type DisplayOpts struct {
+	Cursor string `mapstructure:"cursor"`
+}
+```
+
+And our `app` module, for now, just contains a global variable called `PluginOptions` which we are setting when we read the configuration.
+
+```
+package app
+ 
+import (
+	"fmt"
+	"github.com/harrisoncramer/joke-gpt/shared"
+)
+ 
+/* Global plugin options shared across models */
+var PluginOptions shared.PluginOpts
+ 
+func Start() {
+  fmt.Printf("%+v", PluginOptions)
+}
+```
+
+If all goes well, when we run our application:
+
+1. The Cobra tool will run our root command
+2. The Viper code will read in our config file, and set missing default values
+3. Viper will set the configuration in our app package
+4. The app package will start, and print out the configuration
+
+Let’s make a `config.yaml` file in the root of the repository with some settings:
+
+config.yaml
+
+```
+token: "blah"
+display:
+  cursor: ">>"
+network:
+  timeout: 1000
+keys:
+  select: "o"
+```
+
+And then let’s run our application!
+
+```
+$ go run . --config ./config.yaml
+{Token:blah Network:{Timeout:1000 TimeoutMillis:1s} Display:{Cursor:>>} Keys:{Up:k Down:j Select:o Back:esc Quit:ctrl+c}}
+```
+
+As you can see, the values from our YAML file are being parsed into the application. We can override the token if we want by passing in a `--token` flag. Thanks to Cobra, we can also see more about our application by running the `--help` command.
+
+```
+$ go run . --config ./config.yaml --help
+Our TUI application
+ 
+Usage:
+  sh [flags]
+ 
+Flags:
+      --config string   The path to a .yaml configuration file
+  -h, --help            help for sh
+  -t, --token token     Token for the ChatGPT API. This value will override a token set in your config file
+```
+
+Now that we’ve got our CLI configured, let’s work on building our stateful application.
+
+## The Basic Model with BubbleTea 🧋
+
+BubbleTea uses an MVC pattern to control state and render views. I’d recommend familiarizing yourself with it and [Elm’s model](https://guide.elm-lang.org/architecture/) for application architecture, on which BubbleTea is based.
+
+It took me a while to grok BubbleTea, even though I’m coming from a web development background and am used to developing reactive applications. The biggest “aha” moment for me was when I realized that all messages flow _down_ in the application and start out at the topmost parent model.
+
+To start, let’s update our `Start` function so that it actually starts our application:
+
+app/main.go
+
+```
+package app
+ 
+import (
+	"fmt"
+	"os"
+ 
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/harrisoncramer/joke-gpt/shared"
+)
+ 
+/* Global plugin options shared across models */
+var PluginOptions shared.PluginOpts
+ 
+/* Initializes the root model and starts the TUI application */
+func Start() {
+	m := NewFirstModel()
+	p := tea.NewProgram(m)
+	if _, err := p.Run(); err != nil {
+		fmt.Printf("Error starting BubbleTea: %v", err)
+		os.Exit(1)
+	}
+}
+```
+
+We now need to define our BubbleTea model.
+
+The model can only be passed to `tea.NewProgram` when it has a set of methods: `Init`, `Update`, and `View`. These methods satisfy BubbleTea’s `tea.Model` interface.
+
+When our model first starts, it calls the `Init` function. The function is responsible for any initial work, such as reaching out to APIs or setting initial data in our model. The application then enters an update cycle.
+
+The cycle responds to events (like a keypress or a window resize event) via the `Update` method. These events are passed as `tea.Msg` arguments to the method. The method takes these messages and modifies our application state (and possibly returns more commands, which will re-trigger the update cycle).
+
+Finally, the `View` function is responsible for taking our model’s state and rendering the view, which is just a string.
+
+Let’s set up the methods to satisfy that interface.
+
+Our `Init` method is a no-op.
+
+Our `View` method will simply return our application’s plugin options in a readable form.
+
+Our `Update` method will switch on the message type, and for keypresses that match our keybinding for quit, will return a `tea.Quit` command. The `tea.Quit` command is a command provided by BubbleTea that will exit the application.
+
+app/main_model.go
+
+```
+package app
+ 
+import (
+	tea "github.com/charmbracelet/bubbletea"
+)
+ 
+func NewFirstModel() tea.Model {
+	return MainModel{}
+}
+ 
+type MainModel struct {}
+ 
+func (m Model) Init() tea.Cmd {
+	return nil
+}
+ 
+func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Quit:
+			return m, tea.Quit
+		}
+	}
+ 
+	return m, nil
+}
+ 
+func (m Model) View() string {
+  return fmt.Sprintf("%+v", PluginOptions)
+}
+```
+
+Now, when we run our application, we should see the application load and display our configuration. Pressing our quit key (by default `ctrl+c`) will exit the application.
+
+## Building a Selector Component
+
+Since we are building an application that allows us to choose from a set of options, we want to give the user the ability to scroll between the options, and choose one.
+
+While we could handle this in the parent model, BubbleTea encourages the use of nested models for these types of behaviors. When the main model encounters an event that should be handled by a subview, it’ll delegate the `Update` behavior to that submodel.
+
+In our main model, let’s embed another `tea.Model` called `selector` which is also a tea model.
+
+app/main_model.go
+
+```
+package app
+ 
+import (
+	tea "github.com/charmbracelet/bubbletea"
+)
+ 
+func NewFirstModel() tea.Model {
+	return MainModel{
+		selector: Selector{
+			options: []Option{
+				{
+					Label: "Tell me a joke",
+					Value: "joke",
+				},
+				{
+					Label: "Quit",
+					Value: "quit",
+				},
+			},
+		},
+	}
+}
+ 
+type MainModel struct {
+	selector Selector
+}
+ 
+ 
+func (m Model) Init() tea.Cmd {
+	return nil
+}
+ 
+func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Quit:
+			return m, tea.Quit
+		}
+	}
+ 
+	return m, nil
+}
+ 
+func (m Model) View() string {
+  return fmt.Sprintf("%+v", PluginOptions)
+}
+```
+
+I’m putting the `Selector` model into a different file. This model handles a set of keypresses, and updates it’s internal state accordingly. It’ll render a set of choices.
+
+The `move` function invocations in the `Update` function mutate the model’s state.
+
+There is also behavior defined for when the select key is pressed. In that case, we return a new command (Commands in BubbleTea are just functions that return messages) which will be handled by the parent.
+
+app/selector.go
+
+```
+package app
+ 
+import (
+	"fmt"
+	"strings"
+ 
+	tea "github.com/charmbracelet/bubbletea"
+)
+ 
+type Option struct {
+	Label string `json:"label"`
+	Value string `json:"value"`
+}
+ 
+type Selector struct {
+	cursor  int
+	options []Option
+}
+ 
+type Direction string
+ 
+const (
+	Up   Direction = "up"
+	Down Direction = "down"
+)
+ 
+type optionsMsg struct {
+	options []Option
+}
+ 
+type moveMsg struct {
+	direction Direction
+}
+ 
+type selectMsg struct {
+	value string
+}
+ 
+func (s Selector) Init() tea.Cmd {
+	return nil
+}
+ 
+/* Responds to keypresses that are defined in our plugin options and updates the model */
+func (s Selector) Update(msg tea.Msg) (Selector, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Down:
+			s.move(Down)
+		case PluginOptions.Keys.Up:
+			s.move(Up)
+		case PluginOptions.Keys.Select:
+			return s, s.selectVal
+		}
+	}
+	return s, nil
+}
+ 
+/* Renders the choices and the current cursor */
+func (s Selector) View() string {
+	base := ""
+	for i, option := range s.options {
+		if i == s.cursor {
+			base += fmt.Sprintf("%s %s\n", PluginOptions.Display.Cursor, option.Label)
+		} else {
+			base += fmt.Sprintf("%s %s\n", strings.Repeat(" ", len(PluginOptions.Display.Cursor)), option.Label)
+		}
+	}
+	return base
+}
+ 
+/* Moves the cursor up or down among the options */
+func (s *Selector) move(direction Direction) {
+	if direction == Up {
+		if s.cursor > 0 {
+			s.cursor--
+		}
+	} else {
+		if s.cursor < len(s.options)-1 {
+			s.cursor++
+		}
+	}
+}
+ 
+/* Chooses the value at the given index. This message is processed by the main model. */
+func (s Selector) selectVal() tea.Msg {
+	return selectMsg{value: s.options[s.cursor].Value}
+}
+```
+
+Now that we’ve built and defined our model, we need to wire it up to our parent component. We need to:
+
+1. Call the `Update` method on the selector when a relevant key is pressed
+2. Handle any messages passed from the selctor _to the parent_
+3. Call the `View` method to render the selector, then combine this text with our parent’s view
+
+#### Calling the Selector’s `Update` method
+
+Let’s tackle the `Update` function first. In order for the selector to process keystrokes that originally are passed to the parent, we delegate those keys to the selector model.
+
+We can do this by calling the selector’s `Update` method _first_ regardless of the key pressed, and returning the updated model and a (possibly nil) command from the child.
+
+app/main.go
+
+```
+func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+ 
+	var cmds = []tea.Cmd{}
+ 
+	/* Possibly update the selector. If the selectorCmd 
+    is non-null it means that we want to process that event lets
+    add it to our list of commands */
+	var cmd tea.Cmd
+	m.selector, cmd = m.selector.Update(msg)
+	cmds = append(cmds, cmd)
+ 
+	switch msg := msg.(type) {
+	/* ...all other events */
+```
+
+I like this pattern because it encapsulates all of the selector logic in one place. The downside is that you may be calling the Update method unnecessarily (versus if you only called it for the correct keystrokes). This is in my opinion a good tradeoff.
+
+#### Handling Messages from the Selector
+
+Next, we need to tell the main model how to respond to messages triggered by the selector component. In our case, there’s only one message type we need to care about: `selectMsg`. This message is fired in the child when a selection occurs.
+
+We can use type descrimination to react accordingly in the parent. For now, we’ll just exit the application with a message.
+
+app/main.go
+
+```
+func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	if m.err != nil {
+		return m, tea.Quit
+	}
+ 
+	/* Handle possible commands by selector */
+	var cmd tea.Cmd
+	m.selector, cmd = m.selector.Update(msg)
+	cmds = append(cmds, cmd)
+ 
+ 
+	/* All other events */
+	switch msg := msg.(type) {
+	case selectMsg:
+      log.Fatal(fmt.Sprintf("You chose %s", msg.value))
+      os.Exit(0)
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Quit:
+			return m, tea.Quit
+		}
+	}
+```
+
+#### Rendering our Full View
+
+The last piece we need to wire up is our view. Right now, our selector’s state is updating but we aren’t displaying it.
+
+All we need to do is call the `View` method and combine it with our parent’s view. Update your main model’s `View` method accordingly:
+
+app/main.go
+
+```
+/* Rest of model cropped for brevity... */
+ 
+func (m MainModel) View() string {
+	base := "Main View\n"
+	base += m.selector.View()
+	base += fmt.Sprintf("\n\n%s", m.help.View())
+	return base
+}
+```
+
+At this point, we should be able to navigate up and down in our view, and make a selection. The selection should print out to the screen and then quit our application.
+
+This may seem like a lot of code for such a simple application. It is!
+
+But the foundation for more complexity is now in place. Let’s handle that next.
+
+## Handling the Selection (The Joke Model)
+
+Let’s add the following `case` our our `Update` method in our main model, which will handle the `selectMsg` message type when someone makes a selection.
+
+app/main.go
+
+```
+func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+ 
+	var cmd tea.Cmd
+	m.selector, cmd = m.selector.Update(msg)
+	cmds = append(cmds, cmd)
+ 
+	switch msg := msg.(type) {
+	case selectMsg:
+		if msg.value == "joke" {
+			jokeModel := JokeModel{}
+			return jokeModel, jokeModel.Init()
+		}
+		if msg.value == "quit" {
+			return m, tea.Quit
+		}
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Quit:
+			return m, tea.Quit
+		}
+	}
+ 
+	return m, nil
+}
+```
+
+The main model now _passes off control_ to a new model, the `JokeModel` which we will write next. This model will render our new view when the user makes a selection to tell a joke.
+
+Let’s create a new file `app/joke_model.go` and set up the basic scaffolding of our new model. All this model does for now is render a title, and handle keypresses for quitting and navigating back to the previous model:
+
+app/joke_model.go
+
+```
+package app
+ 
+import (
+	help "github.com/charmbracelet/bubbles/help"
+	tea "github.com/charmbracelet/bubbletea"
+)
+ 
+type JokeModel struct {
+	help help.Model
+}
+ 
+func (m JokeModel) Init() tea.Cmd {
+	return nil
+}
+ 
+func (m JokeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
+	switch msg := msg.(type) {
+	case errMsg:
+		m.err = msg
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Quit:
+			return m, tea.Quit
+		case PluginOptions.Keys.Back:
+			firstModel := NewFirstModel() // Return to the main model
+			return firstModel, firstModel.Init()
+		}
+	}
+ 
+	return m, cmd
+}
+ 
+func (m JokeModel) View() string {
+	return "Joke View\n"
+}
+```
+
+If we run our application and choose “joke” we should now land on this page. Navigate backward by pressing your back key.
+
+Let’s now load in some data into our joke model. We’ll do this during the `Init` function and handle error states accordingly. Here’s the full model after all the updates, with the API call to ChatGPT that provides our prompt and handles the response.
+
+app/joke_model.go
+
+```
+package app
+ 
+import (
+	"fmt"
+ 
+	help "github.com/charmbracelet/bubbles/help"
+	tea "github.com/charmbracelet/bubbletea"
+)
+ 
+type JokeModel struct {
+	err  error
+	help help.Model
+	joke string
+}
+ 
+type tellJokeMsg struct{}
+ 
+func (m JokeModel) Init() tea.Cmd {
+	return getJoke // This command makes the API call and returns a jokeMsg with our data, or an errMsg
+}
+ 
+func (m JokeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	if m.err != nil {
+		return m, tea.Quit
+	}
+ 
+	var cmd tea.Cmd
+	switch msg := msg.(type) {
+	case errMsg:
+		m.err = msg
+	case jokeMsg:
+		m.joke = msg.joke
+	case tellJokeMsg:
+		return m, getJoke
+	case tea.KeyMsg:
+		switch msg.String() {
+		case PluginOptions.Keys.Quit:
+			return m, tea.Quit
+		case PluginOptions.Keys.Back:
+			firstModel := NewFirstModel()
+			return firstModel, firstModel.Init()
+		}
+	}
+ 
+	return m, cmd
+}
+ 
+func (m JokeModel) View() string {
+	if m.err != nil {
+		return m.err.Error()
+	}
+ 
+	base := "GPT Joke - Joke View\n"
+ 
+	if m.joke == "" {
+		base += "Loading...\n"
+	} else {
+		base += fmt.Sprintf("\n%s", m.joke)
+	}
+ 
+	return base
+}
+```
+
+The code that makes the API call in `getJoke` reaches out to ChatGPT and will either return an error message or a joke message to the model.
+
+```
+package app
+ 
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"time"
+ 
+	tea "github.com/charmbracelet/bubbletea"
+)
+ 
+type ChatRequest struct {
+	Model    string `json:"model"`
+	Messages []struct {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	} `json:"messages"`
+}
+ 
+type ChatCompletionResponse struct {
+	Choices []struct {
+		Message struct {
+			Role    string `json:"role"`
+			Content string `json:"content"`
+		} `json:"message"`
+	} `json:"choices"`
+}
+ 
+type jokeMsg struct {
+	joke string
+}
+ 
+func getJoke() tea.Msg {
+	client := &http.Client{
+		Timeout: time.Duration(PluginOptions.Network.Timeout) * time.Millisecond,
+	}
+ 
+	url := "https://api.openai.com/v1/chat/completions"
+	payload := ChatRequest{
+		Model: "gpt-4o",
+		Messages: []struct {
+			Role    string `json:"role"`
+			Content string `json:"content"`
+		}{
+			{Role: "system", Content: "You are a a wisecracking assistant."},
+			{Role: "user", Content: "Tell me a joke about anything. Please make it unique!"},
+		},
+	}
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		return errMsg{err}
+	}
+ 
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payloadBytes))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", PluginOptions.Token))
+	req.Header.Set("Content-Type", "application/json")
+ 
+	if err != nil {
+		return errMsg{err}
+	}
+ 
+ 
+	resp, err := client.Do(req)
+ 
+	if err != nil {
+		return errMsg{err}
+	}
+ 
+	if resp.StatusCode != 200 {
+		return errMsg{fmt.Errorf("ChatGPT: %s!\n", resp.Status)}
+	}
+ 
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return errMsg{err}
+	}
+ 
+	var chatResponse ChatCompletionResponse
+	err = json.Unmarshal(b, &chatResponse)
+	if err != nil {
+		return errMsg{err}
+	}
+ 
+	return jokeMsg{chatResponse.Choices[0].Message.Content}
+}
+```
+
+That’s it! The code is super extensible. For instance, it’s not difficult to expand this example with a “repeat” keybinding, that fetches a new joke, or expand different selectors or views with new content.
+
+## Closing Thoughts
+
+The tool is nonetheless super powerful and it’s a far better alternative to building with Bash or most other CLI tools, especially when combined with Cobra, where you can automatically pass arguments to your application and jump immediately to specific views!
+
+The full code for this example [on my Github](https://github.com/harrisoncramer/joke-gpt) expands on this concept by adding a `joke` subcommand which fetches and displays a joke right away.

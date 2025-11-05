@@ -1,0 +1,254 @@
+---
+link: https://harrisoncramer.me/mocking-interfaces-in-go/
+excerpt: Uber's gomock tool lets you easily mock out functionality from external libraries
+slurped: 2025-11-05T11:58
+title: Mocking Interfaces in Go
+tags:
+  - go
+  - interface
+---
+
+Uber's gomock tool lets you easily mock out functionality from external libraries
+
+I’m building an application that makes heavy use of an external API to interface with Gitlab, and was looking for a good way to mock that dependency in tests.
+
+The [gomock](https://github.com/uber-go/mock) tool from Uber has worked well and let me delete a lot of code. Here’s a quick overview of how it works, and how you can use it.
+
+## Mocking: The Basics
+
+At it’s core the tool helps convert interfaces in your codebase into mocks.
+
+As a contrived example, say that you have a struct called `person` which has the ability to give a greeting in a variety of languages, through an embedded `translator` service.
+
+```
+package main
+ 
+import "fmt"
+ 
+func main() {
+ 
+	t := TranslationService{}
+ 
+	harry := person{
+		name:       "Harry",
+		Translator: &t,
+	}
+	output := harry.SayGreeting("english")
+ 
+	fmt.Println(output)
+}
+```
+
+If we look at the implementation of the `Translator` service and the person, perhaps we find that there is a translation API that we need to call to in the translator service:
+
+```
+package main
+ 
+import "fmt"
+ 
+type TranslationService struct{}
+ 
+func (t TranslationService) Translate(lang string, text string) string {
+	return text // Reach out to an external API here...
+}
+ 
+type person struct {
+	name       string
+	Translator *TranslationService
+}
+ 
+func (p person) SayGreeting(language string) string {
+	switch language {
+	case "english":
+		return fmt.Sprintf("Hello, my name is %s!", p.name)
+	case "spanish":
+		return p.Translator.Translate(language, fmt.Sprintf("Hello, my name is %s", p.name))
+	default:
+		return fmt.Sprintf("I don't speak %s", language)
+	}
+}
+```
+
+If we keep everything as-is, we’ll run into some problems testing our code. That’s because we have no way to shortcut the translator code. If the service takes a long time to respond, so will our tests.
+
+Let’s change our `person` struct slightly, to expect a translator interface, instead of a struct:
+
+```
+package main
+ 
+type Translator interface {
+	Translate(lang string, text string) string
+}
+ 
+type TranslationService struct{}
+ 
+func (t TranslationService) Translate(lang string, text string) string {
+	return text
+}
+ 
+type person struct {
+	name       string
+	Translator Translator
+}
+```
+
+The benefits here aren’t immediately obvious. We are still using the same struct in our code.
+
+But, when testing, we can write a _different_ translator that satisfies the `Translator` interface, without having to hit that external API.
+
+person_test.go
+
+```
+package main
+ 
+import (
+	"testing"
+)
+ 
+type fakeTranslator struct{}
+ 
+func (t fakeTranslator) Translate(lang string, text string) string {
+	if lang == "spanish" {
+		return "Hola, me llamo Harry"
+	}
+	return "Hello, my name is Harry"
+}
+ 
+func TestGreeting(t *testing.T) {
+	p := person{
+		name:       "Sam",
+		translator: fakeTranslator{},
+	}
+ 
+	got := p.SayGreeting("spanish")
+	want := "Hola, me llamo Harry"
+ 
+	if got != want {
+		t.Errorf("Got '%s' but wanted '%s'", got, want)
+	}
+}
+```
+
+Since the `fakeTranslator` here satisfies the `Translator` interface (has a `Translate` method) we can provide it to the person and test our functionality. But writing fake structs like this to satisfy every interface can be very cumbersome. This is where `gomock` comes into play.
+
+## Generating Mocks With `gomock`
+
+The `gomock` tool lets us generate the mocks needed to satisfy our interfaces automatically. Let’s install the CLI tool:
+
+```
+go install go.uber.org/mock/mockgen@latest
+```
+
+Next, point the tool at a file containing your interfaces, and pipe the output to another file. In this example, I’ll put them into the `mocks` folder
+
+```
+mkdir mocks
+mockgen -source person.go > mocks/person.go
+```
+
+From the generator, we now have a new `NewMockTranslator` that returns a mock to us called `MockTranslator` which satisfies our original interface. In our tests, we can use this mock.
+
+By itself, this struct isn’t going to actually implement the methods. For instance, we can pass it to our test but the test will fail.
+
+```
+package main
+ 
+import (
+	"testing"
+ 
+	mock_main "github.com/harrisoncramer/learning-gomock/mocks"
+	"go.uber.org/mock/gomock"
+)
+ 
+func TestGreeting(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	mockTranslator := mock_main.NewMockTranslator(ctrl)
+ 
+	p := person{
+		name:       "Sam",
+		Translator: mockTranslator,
+	}
+ 
+	got := p.SayGreeting("spanish")
+	want := "Hola, me llamo Harry"
+ 
+	if got != want {
+		t.Errorf("Got '%s' but wanted '%s'", got, want)
+	}
+}
+```
+
+If we run this, it’ll compile, but we’ll see an `Unexpected call` error, telling us that there are no calls of the `Translate` method. This is because, our mock is smart enough to fail the test when we call it unexpectedly.
+
+Let’s define a behavior for the mock and an expectation that it’ll be called once.
+
+person_test.go
+
+```
+func TestGreeting(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	mockTranslator := mock_main.NewMockTranslator(ctrl)
+ 
+	want := "Hola, me llamo Harry"
+	mockTranslator.EXPECT().
+		Translate("spanish", gomock.Any()).
+		Return(want)
+ 
+	p := person{
+		name:       "Sam",
+		Translator: mockTranslator,
+	}
+ 
+	got := p.SayGreeting("spanish")
+	if got != want {
+		t.Errorf("Got '%s' but wanted '%s'", got, want)
+	}
+} 
+```
+
+This tells our mock translator to expect a `Translate` call with specific parameters (the `gomock.Any()` call here lets us match any argument), and _when that occurs_, what to return, in this case, a translated string.
+
+The test then calls the method on the person, and the person will call our mock!
+
+## Creating Stubs
+
+In this case the mock expects to be called _just once_ but if you call it a second time it’ll fail. For instance, if we add a second `p.SayGreeting("spanish")` in the above example, we’ll see an error telling us that the mock “has already been called the max number of times.”
+
+If you’d like to create a _stub_ which will responsd to an invocation any number of times and not fail the test, you can add on a `.AnyTimes()` method to the end of the call chain.
+
+person_test.go
+
+```
+func TestGreeting(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	mockTranslator := mock_main.NewMockTranslator(ctrl)
+ 
+	want := "Hola, me llamo Harry"
+	mockTranslator.EXPECT().
+		Translate("spanish", gomock.Any()).
+		Return(want).
+        AnyTimes()
+ 
+	p := person{
+		name:       "Sam",
+		Translator: mockTranslator,
+	}
+ 
+	got := p.SayGreeting("spanish")
+	p.SayGreeting("spanish")
+	p.SayGreeting("spanish")
+	p.SayGreeting("spanish")
+ 
+	if got != want {
+		t.Errorf("Got '%s' but wanted '%s'", got, want)
+	}
+} 
+```
+
+## Closing thoughts
+
+While the previous example is a bit contrived, you can see how the `gomock` tool is useful for mocking out external dependencies, in order to keep your application focused on your own business logic.
+
+One word of caution, however, is that this decoupling is powerful but can lead to false positives or false negatives in our test results. In our example, for instance, the person’s name is Sam, but the translated string says that it’s Harry.
+
+Overall, though, the `gomock` library makes it incredibly easy to generate mocks and is a great tool when you have an external service or library that you just need to get out of your way.
