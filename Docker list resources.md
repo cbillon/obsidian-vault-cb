@@ -5,5 +5,4 @@ tags:
 ---
 [ici](http://nane.kratzke.pages.mylab.th-luebeck.de/about/blog/2014/08/24/valuable-docker-links/)
 
-[Awesome ressources](https://github.com/veggiemonk/awesome-docker/blob/master/README.md#terminal
-)
+[Awesome ressources](https://github.com/veggiemonk/awesome-docker/blob/master/README.md#terminal)
