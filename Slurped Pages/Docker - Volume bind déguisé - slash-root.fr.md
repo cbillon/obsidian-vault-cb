@@ -18,7 +18,7 @@ Avec Docker, il y a principalement 2 types de volumes qui sont utilisés :
 
 Personnellement, j'utilise la plupart du temps des volumes de type "bind" afin d'avoir de la persistence pour certaines données d'un conteneur. Par exemple, une base de donnée.
 
-Le problème que je recontre parfois est la gestion des utilisateurs/groupes propriétaires et des permissions sur les données stockées dans ce type de volume "bind".
+Le problème que je rencontre parfois est la gestion des utilisateurs/groupes propriétaires et des permissions sur les données stockées dans ce type de volume "bind".
 
 Avec un volume "volume", l'avantage est que tout est géré par docker. Par contre, je ne souhaite pas forcément stocker ce volume docker dans /var/lib/docker/volumes de l'host.
 
