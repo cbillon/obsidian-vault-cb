@@ -1,0 +1,144 @@
+---
+link: https://docs.dagger.io/
+byline: Dagger
+excerpt: Dagger is a platform for automating software delivery. It can build, test, and ship any codebase, reliably and at scale.
+slurped: 2026-03-03T18:49
+title: Overview | Dagger
+tags:
+  - build
+---
+
+## What is Dagger?
+
+Dagger is a platform for automating software delivery. It can build, test and ship any codebase, reliably and at scale.
+
+Dagger runs locally, in your CI server, or directly in the cloud.
+
+## Why Dagger?[​](https://docs.dagger.io/#why-dagger "Direct link to Why Dagger?")
+
+Dagger makes your software delivery _programmable_, _local-first_, _repeatable_ and _observable_.
+
+**Programmable**. Shell scripts and proprietary YAML are no longer acceptable for automating software delivery. Dagger provides: a complete execution engine and system API; SDKs for 8 languages; an interactive REPL; a rich ecosystem of reusable modules; and more.
+
+**Local-first**. Once you automate a task with Dagger, it will reliably run on any supported system: your laptop, AI sandbox, CI server, or dedicated cloud infrastructure. The only dependency is a container runtime like Docker.
+
+**Repeatable**. Tools run in containers, orchestrated by sandboxed functions. Host dependencies are explicit and strictly typed. Intermediate artifacts are built just-in-time. Every operation is incremental by default, with advanced cache control. Whether it's a test report, a build or a deployment, Dagger gives you an output you can trust.
+
+**Observable**. Every operation emits a full OpenTelemetry trace, enriched by granular logs and metrics. Visualize the trace in directly in the terminal, or in a web view. Debug complex workflows immediately instead of guessing what went wrong from a wall of text logs.
+
+## Features[​](https://docs.dagger.io/#features "Direct link to Features")
+
+**System API**. A cross-language API for orchestrating containers, filesystems, secrets, git repositories, network tunnels, and more. Every operation is typed and composable.
+
+**SDKs in 8 languages**. Native SDKs for Go, Python, TypeScript, PHP, Java, .NET, Elixir and Rust. Each SDK is generated from the API schema, so you get idiomatic code with full type safety and editor support.
+
+**Toolchains**. Install and use pre-built modules for common tools like linters, formatters, and test runners. No code required - just `dagger toolchain install` and start using validated, reusable automation.
+
+**Typed artifacts**. Define custom object types with encapsulated state and functions. Types are content-addressed and can be passed across SDK language boundaries and module boundaries without serialization.
+
+**Incremental execution**. Every operation is keyed by its inputs. Change one file and only the affected operations re-run. Caching is content-addressed and works automatically across local runs and CI.
+
+**Runs anywhere**. The only requirement is a Linux container runtime. Runs natively on Linux, or via Docker Desktop and similar products on macOS and Windows. Local and CI behavior are identical.
+
+**Built-in tracing**. Every operation emits OpenTelemetry spans. The CLI includes a live TUI; traces can also be exported to Jaeger, Honeycomb, or any OTel-compatible backend.
+
+## Get started[​](https://docs.dagger.io/#get-started "Direct link to Get started")
+
+- [Installation →](https://docs.dagger.io/getting-started/installation) Install Dagger and set up your development environment
+- [Core Concepts →](https://docs.dagger.io/core-concepts) Understand toolchains, checks, and functions
+- [Use a Toolchain →](https://docs.dagger.io/getting-started/quickstarts/toolchain) Get started without writing code
+- [CI Quickstart →](https://docs.dagger.io/getting-started/quickstarts/ci) Build your first workflow
+
+## Dagger platform[​](https://docs.dagger.io/#dagger-platform "Direct link to Dagger platform")
+
+Dagger consists of a number of components, all of which work together in an integrated fashion to provide a framework to build and run composable workflows.
+
+### Types[​](https://docs.dagger.io/#types "Direct link to Types")
+
+Types are the basic building blocks - such as containers, directories, files, and LLMs - that hold data (state) and offer operations (methods) you can link together. Each operation on a type runs inside a container, ensuring consistent, isolated execution.
+
+[**Learn more about types →**](https://docs.dagger.io/getting-started/types)
+
+### Functions[​](https://docs.dagger.io/#functions "Direct link to Functions")
+
+Dagger Functions are individual units of computation that perform a specific task by combining operations on types with custom logic. Dagger Functions are written in a programming language using a type-safe Dagger SDK, and packaged and shared in Dagger modules.
+
+[**Learn more about Dagger Functions →**](https://docs.dagger.io/extending/functions)
+
+### Modules[​](https://docs.dagger.io/#modules "Direct link to Modules")
+
+Dagger Functions are packaged, shared and reused using Dagger modules.
+
+When a Dagger module is loaded into a Dagger session, the Dagger API is dynamically extended with new functions served by that module. So, after loading a Dagger module, an API client can now call all of the original core functions plus the new functions provided by that module.
+
+[**Learn more about Dagger modules →**](https://docs.dagger.io/features/reusability)
+
+### Core Concepts[​](https://docs.dagger.io/#core-concepts "Direct link to Core Concepts")
+
+Start here to understand the fundamentals of working with Dagger:
+
+- **[Toolchains](https://docs.dagger.io/core-concepts/toolchains)** - Install and use modules without writing code
+- **[Checks](https://docs.dagger.io/core-concepts/checks)** - Validate commits with automated quality, security, and standards checks
+- **[Functions](https://docs.dagger.io/core-concepts/functions)** - Building blocks of Dagger workflows
+
+[**Learn core concepts →**](https://docs.dagger.io/core-concepts)
+
+### Key Features[​](https://docs.dagger.io/#key-features "Direct link to Key Features")
+
+Dagger provides powerful features to build, validate, and manage your workflows:
+
+- **[Programmable workflows](https://docs.dagger.io/features/programmability)** - Write pipelines in code, not YAML
+- **[Automatic caching](https://docs.dagger.io/features/caching)** - Speed up execution with intelligent caching
+- **[LLM integration](https://docs.dagger.io/features/llm)** - Build AI agents with native LLM support
+
+[**Explore all features →**](https://docs.dagger.io/features)
+
+### CLI[​](https://docs.dagger.io/#cli "Direct link to CLI")
+
+The Dagger CLI is your primary entrypoint to Dagger. It is a full-featured, easy to use tool that can be used interactively from a terminal or non-interactively from a shell script or a CI runner. The Dagger CLI also includes a real-time visualization feature called the terminal UI (TUI).
+
+The Dagger CLI acts as a client to the Dagger Engine. It can automatically provision a Dagger Engine if needed.
+
+[**Learn more about the Dagger CLI →**](https://docs.dagger.io/reference/cli)
+
+### Engine and API[​](https://docs.dagger.io/#engine-and-api "Direct link to Engine and API")
+
+The Dagger Engine is the core runtime powering the Dagger platform. It combines an execution engine, universal type system, data layer and module system. It can run on any OCI-compatible system, and is controlled by the Dagger API.
+
+The Dagger API is a unified interface for programming the Dagger Engine. It defines a universal type system based on GraphQL, which can be introspected by any client, and dynamically extended by specially crafted servers. The core features of the Dagger Engine - execution engine, data layer - are available as builtin types.
+
+[**Learn more about the Dagger API →**](https://docs.dagger.io/getting-started/concepts)
+
+### SDKs[​](https://docs.dagger.io/#sdks "Direct link to SDKs")
+
+Dagger SDKs provide resources for developing Dagger modules using a familiar language and toolchain. Each SDK provides:
+
+1. A _client generator_, to _consume_ the Dagger API with native code.
+2. A _server generator_, to _extend_ the Dagger API with native code.
+3. Examples and reference documentation
+
+[**Learn more about Dagger SDKs →**](https://docs.dagger.io/getting-started/api/sdk)
+
+### Dagger Cloud[​](https://docs.dagger.io/#dagger-cloud "Direct link to Dagger Cloud")
+
+[Dagger Cloud](https://dagger.cloud/) complements Dagger with a production-grade control plane. Features of Dagger Cloud include workflow visualization and operational insights. Dagger Cloud provides a web interface to visualize each step of your workflow, drill down to detailed logs, understand how long operations took to run, and whether operations were cached.
+
+Dagger Cloud also collects telemetry from all your organization's Dagger Engines, whether they run in development or CI, and presents it all to you in one place. This gives you a unique view on all workflows, both pre-push and post-push.
+
+[**Learn more about Dagger Cloud →**](https://dagger.cloud/)
+
+### Daggerverse[​](https://docs.dagger.io/#daggerverse "Direct link to Daggerverse")
+
+The [Daggerverse](https://daggerverse.dev/) is a free service run by Dagger, which indexes all publicly available Dagger modules, and lets you easily search and consume them.
+
+You can use the Daggerverse to find reusable modules, share your own modules, and discover new ways to use Dagger.
+
+[**Learn more about the Daggerverse →**](https://daggerverse.dev/)
+
+## Community and support[​](https://docs.dagger.io/#community-and-support "Direct link to Community and support")
+
+- [**Community**](https://dagger.io/community) - Explore the Dagger community and join upcoming events
+- [**Daggerverse**](https://daggerverse.dev/) - Find modules in our community module registry
+- [**Discord**](https://discord.gg/dagger-io) - Get help and share ideas
+- [**YouTube**](https://www.youtube.com/@dagger-io) - Learn about Dagger through videos, community demos, and livestreams
+- [**GitHub**](https://github.com/dagger/dagger) - Contribute to Dagger's open source repository
