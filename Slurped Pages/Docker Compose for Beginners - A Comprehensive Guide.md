@@ -12,33 +12,33 @@ title: "Docker Compose for Beginners: A Comprehensive Guide"
 ---
 ## Common Docker Compose Commands:
 
-| Command | Description                                                 |  
-| ------- | ----------------------------------------------------------- |  
-| build   | Builds or rebuilds services                                 |  
-| config  | Validates and views the Compose file                        |  
-| create  | Creates services                                            |  
-| down    | Stops and removes containers, networks, images, and volumes |  
-| events  | Receives real time events from containers                   |  
-| exec    | Executes a command in a running container                   |  
-| help    | Gets help on a command                                      |  
-| images  | Lists images                                                |  
-| kill    | Kills containers                                            |  
-| logs    | View output from containers                                 |  
-| pause   | Pauses services                                             |  
-| port    | Prints the public port for a port binding                   |  
-| ps/ls   | Lists containers                                            |  
-| pull    | Pulls service images                                        |  
-| push    | Pushes service images                                       |  
-| restart | Restarts services                                           |  
-| rm      | Removes stopped containers                                  |  
-| run     | Runs a one-off command on a service                         |  
-| scale   | Sets the number of containers for a service                 |  
-| start   | Starts services                                             |  
-| stop    | Stops services                                              |  
-| top     | Displays the running processes for a service                |  
-| unpause | Unpauses services                                           |  
-| up      | Creates and starts containers                               |  
-| version | Shows the Docker-Compose version information                |
+| Command | Description                                                 |     |
+| ------- | ----------------------------------------------------------- | --- |
+| build   | Builds or rebuilds services                                 |     |
+| config  | Validates and views the Compose file                        |     |
+| create  | Creates services                                            |     |
+| down    | Stops and removes containers, networks, images, and volumes |     |
+| events  | Receives real time events from containers                   |     |
+| exec    | Executes a command in a running container                   |     |
+| help    | Gets help on a command                                      |     |
+| images  | Lists images                                                |     |
+| kill    | Kills containers                                            |     |
+| logs    | View output from containers                                 |     |
+| pause   | Pauses services                                             |     |
+| port    | Prints the public port for a port binding                   |     |
+| ps/ls   | Lists containers                                            |     |
+| pull    | Pulls service images                                        |     |
+| push    | Pushes service images                                       |     |
+| restart | Restarts services                                           |     |
+| rm      | Removes stopped containers                                  |     |
+| run     | Runs a one-off command on a service                         |     |
+| scale   | Sets the number of containers for a service                 |     |
+| start   | Starts services                                             |     |
+| stop    | Stops services                                              |     |
+| top     | Displays the running processes for a service                |     |
+| unpause | Unpauses services                                           |     |
+| up      | Creates and starts containers                               |     |
+| version | Shows the Docker-Compose version information                |     |
 
 ## Best Practices:
 
