@@ -13,7 +13,6 @@ excerpt: |-
 slurped: 2026-02-17T08:48
 title: SSH Tips for Remote Development
 tags:
-  - ssh
   - tips
 ---
 
