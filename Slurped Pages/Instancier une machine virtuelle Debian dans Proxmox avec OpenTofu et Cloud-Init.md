@@ -5,7 +5,8 @@ site: Xieme-Art
 date: 2024-11-07T23:04
 excerpt: Installer une machine virtuelle dans Proxmox VE n’est pas une tâche très sympa. Mais heureusement il est possible de l’automatiser en...
 twitter: https://twitter.com/@ephase
-tags: []
+tags:
+  - OpenTofu
 slurped: 2024-12-19T07:47
 title: Instancier une machine virtuelle Debian dans Proxmox avec OpenTofu et Cloud-Init
 ---

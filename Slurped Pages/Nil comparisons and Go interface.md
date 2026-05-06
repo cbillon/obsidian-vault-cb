@@ -168,9 +168,6 @@ The switch on `.Kind()` is necessary because directly calling `reflect.ValueOf()
 Calling this function on any value, including an interface, reliably checks whether it’s nil.
 
 Fin!
-
-~~~
-
 ## Recent posts
 
 - [Revisiting interface segregation in Go](https://rednafi.com/go/interface-segregation/)

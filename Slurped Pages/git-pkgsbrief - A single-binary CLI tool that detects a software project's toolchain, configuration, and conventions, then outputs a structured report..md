@@ -1,0 +1,397 @@
+---
+link: https://github.com/git-pkgs/brief
+site: GitHub
+excerpt: A single-binary CLI tool that detects a software project's toolchain,
+  configuration, and conventions, then outputs a structured report.  -
+  git-pkgs/brief
+twitter: https://twitter.com/@github
+slurped: 2026-04-22T08:39
+title: "GitHub - git-pkgs/brief: A single-binary CLI tool that detects a
+  software project's toolchain, configuration, and conventions, then outputs a
+  structured report."
+---
+
+A single-binary CLI tool that detects a software project's toolchain, configuration, and conventions, then outputs a structured report.
+
+brief answers the bootstrap questions every AI coding agent, new contributor, and CI pipeline faces: what language is this, how do I install dependencies, how do I run the tests, what linter is configured.
+
+It does not score, grade, or judge. It reports facts.
+
+## Use with AI coding agents
+
+[](https://github.com/git-pkgs/brief#use-with-ai-coding-agents)
+
+Add this to your `CLAUDE.md`, `agents.md`, or equivalent agent instructions file:
+
+```
+Before starting work on this project, run `brief .` to understand the toolchain,
+test commands, linters, and project conventions. If on a branch, also run
+`brief diff` to see which parts of the toolchain are affected by your changes.
+```
+
+The agent will get back structured information about the project's language, package manager, test runner, linter, formatter, build tools, and more, so it doesn't have to guess or ask you. On a feature branch, `brief diff` narrows that down to just the tools relevant to what's been changed, so the agent knows which linters to run, which test frameworks matter, and which config files are in play.
+
+To let Claude Code run `brief` without prompting for approval each time, add this to `~/.claude/settings.json`:
+
+{
+  "permissions": {
+    "allow": ["Bash(brief *)"]
+  }
+}
+
+## Install
+
+[](https://github.com/git-pkgs/brief#install)
+
+```
+brew install git-pkgs/git-pkgs/brief
+```
+
+Or with Go:
+
+```
+go install github.com/git-pkgs/brief/cmd/brief@latest
+```
+
+Or download a binary from [releases](https://github.com/git-pkgs/brief/releases).
+
+## Usage
+
+[](https://github.com/git-pkgs/brief#usage)
+
+```
+brief [flags] [path | url]        Detect project toolchain
+brief diff [flags] [ref1] [ref2]  Detect only what changed between refs
+brief missing [flags] [path]      Show recommended tooling gaps
+brief threat-model [flags] [path] Threat categories implied by detected stack
+brief sinks [flags] [path]        Dangerous functions in detected tools
+brief enrich [flags] [path]       Detect and enrich with external data
+brief list tools                  All tools in the knowledge base
+brief list ecosystems             Supported ecosystems
+brief schema                      JSON output schema
+```
+
+Works on local paths, git URLs, and registry packages:
+
+```
+brief .                                       Local directory
+brief /path/to/project                        Any local path
+brief https://github.com/expressjs/express    Git URL (cloned to temp dir)
+brief npm:express                             Registry package (resolved to source repo)
+brief gem:rails
+brief crate:serde
+brief pypi:requests
+```
+
+Remote sources are shallow-cloned by default. Use `--depth 0` for a full clone, `--keep` to preserve the clone, or `--dir ./somewhere` to clone into a specific directory.
+
+JSON when piped, human-readable on a TTY. Force either with `--json` or `--human`. Use `--category test` to filter to a single category.
+
+```
+brief dev — /home/user/myproject
+
+Language:        Go
+Package Manager: Go Modules (go mod download)
+                 Lockfile: go.sum
+                 9 runtime (223 total)
+
+Test:        go test (go test ./...)
+Lint:        golangci-lint (golangci-lint run)  [.golangci.yml]
+Format:      gofmt (gofmt -w .)
+Docs:        pkgsite (go run golang.org/x/pkgsite/cmd/pkgsite@latest)
+Build:       GoReleaser (goreleaser release --clean)  [.goreleaser.yaml]
+Security:    govulncheck (govulncheck ./...)
+CI:          GitHub Actions  [.github/workflows/]
+Coverage:    go test -cover (go test -coverprofile=coverage.out ./...)
+Dep Updates: Dependabot  [.github/dependabot.yml]
+
+Style:       tabs (inferred)  LF
+Layout:      cmd/
+
+             OS: ubuntu-latest, macos-latest, windows-latest (CI matrix)
+
+Resources:   README.md
+Resources:   LICENSE (MIT)
+Community:   CONTRIBUTING.md
+
+Git:         branch main  71 commits
+             origin: git@github.com:user/myproject.git
+
+Lines:       9295 code  397 files (scc)
+
+148.7ms  428 files checked  11/355 tools matched
+```
+
+Use `--verbose` to include homepage, docs, and repo links for each detected tool.
+
+## Diff
+
+[](https://github.com/git-pkgs/brief#diff)
+
+`brief diff` runs the same detection but filters the report to only show tools, languages, and configuration relevant to files that changed. Useful for understanding what a branch or PR touches in terms of toolchain.
+
+```
+brief diff                        Compare against default branch + uncommitted
+brief diff main                   Compare main to HEAD + uncommitted
+brief diff v1.0.0 v2.0.0         Compare between two refs
+```
+
+With no arguments it auto-detects the default branch from `origin/HEAD`, falling back to `main` or `master`. The output lists changed files and only the toolchain entries those files relate to: if you changed a `.go` file, you'll see Go and its tools but not Python. If you changed `.golangci.yml`, you'll see golangci-lint. If you changed `go.mod`, you'll see dependency information.
+
+Same output format as `brief` -- JSON when piped, human-readable on a TTY.
+
+## Missing
+
+[](https://github.com/git-pkgs/brief#missing)
+
+`brief missing` checks which recommended tool categories are absent for the project's detected ecosystems. It compares what's detected against five categories every project benefits from: test, lint, format, typecheck, and docs.
+
+```
+brief missing .
+brief missing --json .
+```
+
+For each gap it suggests the canonical tool for that ecosystem, with the command to run and a link to docs.
+
+```
+Detected: python
+
+Missing recommended tooling:
+
+  Test         No test tool configured
+               Suggested: pytest (pytest)
+               https://docs.pytest.org
+
+  Lint         No lint tool configured
+               Suggested: Ruff (ruff check .)
+               https://docs.astral.sh/ruff/
+
+  Format       No format tool configured
+               Suggested: Black (black .)
+               https://black.readthedocs.io/en/stable/
+```
+
+Tools built into the language runtime (go test, gofmt, cargo clippy, dart analyze, deno lint, etc.) are detected automatically when the language is present and won't show as missing.
+
+## Threat model
+
+[](https://github.com/git-pkgs/brief#threat-model)
+
+`brief threat-model` unions the threat categories implied by all detected tools. Each tool definition carries taxonomy tags from [oss-taxonomy](https://github.com/ecosyste-ms/oss-taxonomy) that classify what it does (web framework, ORM, template engine, HTTP client, etc). A mapping table in `_threats.toml` resolves those tags to CWE/OWASP threat categories. The output is fully deterministic -- no AI, no heuristics, just lookup.
+
+```
+brief threat-model .
+brief threat-model --json .
+```
+
+A Rails project produces:
+
+```
+Detected: ruby
+Stack:    ActiveRecord, Bundler, GitHub Actions, RSpec, Rails, RuboCop, Ruby
+
+  auth_bypass        Authentication Bypass  [CWE-287 A07:2021]
+                     via Rails
+
+  csrf               Cross-Site Request Forgery  [CWE-352 A01:2021]
+                     via Rails
+
+  mass_assignment    Mass Assignment  [CWE-915 A08:2021]
+                     via ActiveRecord
+
+  sql_injection      SQL Injection  [CWE-89 A03:2021]
+                     via ActiveRecord
+
+  ssti               Server-Side Template Injection  [CWE-1336 A03:2021]
+                     via Rails
+
+  xss                Cross-Site Scripting  [CWE-79 A03:2021]
+                     via Rails
+```
+
+Rails carries `role:framework` + `layer:backend` which fires the backend-framework mapping (XSS, CSRF, SSRF, open redirect, path traversal, auth bypass). It also carries `function:templating` which fires XSS and SSTI, and `function:authentication` which fires auth bypass and session fixation. ActiveRecord carries `function:data-mapping` which fires SQL injection and mass assignment. Tools with no taxonomy contribute nothing, so projects using only linters and formatters get an empty threat list.
+
+Match is conjunctive: a tool must carry all of a mapping's tags to fire it. `role:framework` + `layer:frontend` fires a different (smaller) set than `role:framework` + `layer:backend`, so React and Express don't get the same threats.
+
+## Sinks
+
+[](https://github.com/git-pkgs/brief#sinks)
+
+A "sink" in security analysis is a function where untrusted data ends up doing something dangerous -- executing a SQL query, rendering HTML, spawning a shell process, opening a file path. `brief sinks` collects these from all detected tools and outputs the combined set relevant to this project's stack, so you know what to grep for without reading every tool's documentation.
+
+```
+brief sinks .
+brief sinks --json .
+```
+
+```
+ActiveRecord:
+  Arel.sql                 sql_injection        CWE-89
+                           Marks string as safe SQL, bypassing protections
+  find_by_sql              sql_injection        CWE-89
+  where                    sql_injection        CWE-89
+                           With string interpolation; safe with hash or parameterized array
+  order                    sql_injection        CWE-89
+                           Column name not parameterizable; allowlist instead
+
+Rails:
+  html_safe                xss                  CWE-79
+                           Marks string as safe, bypassing ActionView output escaping
+  redirect_to              open_redirect        CWE-601
+                           When target is from params
+  render inline:           ssti                 CWE-1336
+                           Renders string as ERB template
+
+Ruby:
+  eval                     code_injection       CWE-95
+  system                   command_injection    CWE-78
+  Marshal.load             deserialization      CWE-502
+```
+
+Language definitions carry stdlib sinks (eval, system, pickle.loads, etc). Frameworks carry their own (html_safe, dangerouslySetInnerHTML, redirect_to). ORMs carry raw query escape hatches (find_by_sql, $queryRawUnsafe, Arel.sql). Notes indicate when only some forms of a method are dangerous.
+
+The sink data covers 17 languages, 28 web frameworks, 17 ORMs, 15 HTTP clients, 13 template engines, 10 auth libraries, and more. The knowledge base carries over 700 sinks total.
+
+## Enrichment
+
+[](https://github.com/git-pkgs/brief#enrichment)
+
+`brief enrich` runs the same scan, then fetches metadata from external APIs about the project itself: what packages it publishes, their download counts and dependents, runtime end-of-life status, and OpenSSF Scorecard.
+
+```
+brief enrich .
+brief enrich --json .
+brief enrich --verbose .
+```
+
+Data sources: [ecosyste.ms](https://ecosyste.ms/) for published package metadata, [endoflife.date](https://endoflife.date/) for runtime lifecycle, [OpenSSF Scorecard](https://securityscorecards.dev/) for repo security.
+
+## Resources
+
+[](https://github.com/git-pkgs/brief#resources)
+
+Alongside the toolchain, brief picks up the conventional documents that describe how a project is run. README, changelog, roadmap, license (with detected SPDX identifier), and agent instructions are reported at the top level. Everything else is grouped: legal covers copyright, NOTICE, DCO, and CLA files; community covers contributing guides, code of conduct, support, governance, maintainers, authors, CODEOWNERS, and DEI statements; security covers the security policy, threat model, and audit reports; metadata covers machine-readable files like FUNDING, CITATION.cff, publiccode.yml, codemeta.json, and .zenodo.json.
+
+Matching is case-insensitive and checks the repo root first, then `docs/`, `.github/`, and `.gitlab/`. Paths in the output are repo-relative, so a funding file found under `.github/` is reported as `.github/FUNDING.yml` rather than just the basename. In JSON the groups appear as nested objects under `resources.legal`, `resources.community`, `resources.security`, and `resources.metadata`.
+
+## What it detects
+
+[](https://github.com/git-pkgs/brief#what-it-detects)
+
+54 language ecosystems with 516 tool definitions across 20 categories.
+
+**Languages:** Ada, C, C#, C++, COBOL, Clojure, Common Lisp, Crystal, D, Dart, Deno, Elixir, Elm, Emacs Lisp, Erlang, F#, Fortran, GDScript, Gleam, Go, Groovy, Haskell, Haxe, Java, JavaScript, Julia, Kotlin, Lua, Mojo, Nim, Nix, OCaml, Objective-C, Odin, PHP, Perl, Prolog, Python, R, Racket, Roc, Ruby, Rust, Scala, Scheme, Solidity, Swift, Tcl, TypeScript, V, VHDL, Verilog, Zig.
+
+**Package Managers:** Alire, Bun, Bundler, Cabal, Cargo, CocoaPods, Composer, Conan, Conda, DUB, Deno Modules, Gleam Packages, Go Modules, Gradle, Haxelib, Maven, Mix, Nix Flakes, NuGet, PDM, Pipenv, Pkg, Poetry, Quicklisp, Shards, Swift Package Manager, Yarn, dotnet CLI, elm, fpm, npm, opam, pip, pnpm, pub, rebar3, sbt, uv, vcpkg.
+
+**Test:** AVA, Alcotest, Artillery, Bats, Bruno, Catch2, Cucumber, Cypress, EUnit, ExUnit, Gatling, Ginkgo, Google Test, Hspec, Hurl, JUnit, Jasmine, Jest, Kotest, Lighthouse CI, Locust, MSW, Minitest, Mocha, Newman, PHPUnit, Pest, Playwright, REST Client, RSpec, ScalaTest, Selenium, Testify, Testing Library, Vitest, XCTest, axe-core, benchmark-ips, cargo test, clojure.test, criterion, crystal spec, dart test, deno test, dotnet test, gleam test, go test, hyperfine, k6, kotlin.test, pytest, pytest-benchmark, tape, testament, zig test.
+
+**Lint:** Ameba, Biome, Checkstyle, Clippy, Credo, ESLint, Flake8, HLint, Husky, Lefthook, Overcommit, PHP_CodeSniffer, PMD, Pylint, Revive, Roslyn Analyzers, RuboCop, Ruff, ShellCheck, SpotBugs, Stylelint, SwiftLint, Vale, WartRemover, actionlint, clang-tidy, clj-kondo, commitlint, cspell, dart analyze, deno lint, detekt, elvis, golangci-lint, hadolint, markdownlint, oxlint, pre-commit, typos.
+
+**Format:** Black, Ormolu, PHP CS Fixer, Prettier, Spotless, StandardRB, SwiftFormat, clang-format, cljfmt, crystal tool format, dart format, deno fmt, dotnet format, dprint, erlfmt, gleam format, gofmt, google-java-format, isort, ktlint, mix format, nimpretty, ocamlformat, rustfmt, scalafmt, yapf, zig fmt.
+
+**Typecheck:** Dialyxir, Dialyzer, Flow, PHPStan, Pyright, Sorbet, Steep, mypy, tsc.
+
+**Docs:** Docsify, Docusaurus, Dokka, Doxygen, ExDoc, Hugo, Javadoc, Jekyll, MkDocs, Nextra, Read the Docs, Redoc, Sphinx, Starlight, Storybook, Swagger UI, TypeDoc, VitePress, Yard, cargo doc, dart doc, deno doc, mdBook, phpDocumentor, pkgsite.
+
+**Build:** Actix Web, AdonisJS, Angular, Astro, Authlib, Autotools, Axum, CMake, CarrierWave, Chi, Devise, Django, Dune, EJS, Echo, Electron, Eleventy, Ember.js, Express, Faraday, FastAPI, Fastify, Fiber, Flask, Flutter, Formidable, Foundry, FreeMarker, Gatsby, Gin, GoReleaser, Gson, Guzzle, HTTParty, Haml, Handlebars, Hardhat, Hono, Invoke, Jackson, Jinja2, Koa, Laravel, Less, Liquid, Mage, Make, Mako, Meson, Multer, Mustache, NestJS, Newtonsoft.Json, Next.js, NextAuth.js, Nokogiri, Nunjucks, Nuxt, OkHttp, OmniAuth, Ox, PHP LDAP, Parcel, Passport, Phoenix, PostCSS, Pug, PyCryptodome, PyJWT, PyYAML, Qwik, Rails, Rake, React, React Native, Remix, RestClient, Resty, Rocket, Rollup, Rspack, SWC, Sass, ShellJS, Shrine, Sinatra, Slim, SnakeYAML, SolidJS, Spring Boot, Svelte, SvelteKit, Symfony, Tailwind CSS, Tauri, Thymeleaf, Twig, UnoCSS, Vite, Vue, Webpack, XStream, aiohttp, axios, bcrypt, bcrypt-ruby, cross, crypto-js, cryptography, defusedxml, esbuild, execa, fast-xml-parser, golang-jwt, got, httpx, js-yaml, jsonwebtoken, ldap3, ldapjs, lxml, net-ldap, node-fetch, python-jose, python-multipart, requests, reqwest, ruamel.yaml, ruby-jwt, sh, tsup, undici, urllib3, xml2js.
+
+**Codegen:** Buf, GraphQL Code Generator, OpenAPI, Protobuf, Thrift, Wire, ent, gRPC, mockgen, sqlc.
+
+**Database:** ActiveRecord, Alembic, Atlas, Dbmate, Diesel, Drizzle, Ecto, Flyway, GORM, Goose, Knex.js, Liquibase, MikroORM, Mongoose, Peewee, Prisma, SQLAlchemy, SQLite, Sequel, Sequelize, Tortoise ORM, TypeORM, pgx, sqlx.
+
+**Security:** Bandit, Brakeman, Grype, OWASP Dependency-Check, SOPS, Semgrep, Snyk, SonarQube, Trivy, TruffleHog, bundler-audit, cargo-audit, govulncheck, npm audit, osv-scanner, pip-audit.
+
+**CI:** Azure Pipelines, Buildkite, CircleCI, Cloudflare Workers, Dagger, Drone, Earthly, Fly.io, GitHub Actions, GitLab CI, Jenkins, Netlify, Render, Travis CI, Vercel.
+
+**Container:** Cloud Native Buildpacks, Dev Container, Docker, Docker Compose, Podman.
+
+**Infra:** AWS CDK, Ansible, CloudFormation, Helm, Kubernetes, Kustomize, Packer, Pulumi, Serverless Framework, Terraform, Vagrant.
+
+**Monorepo:** Bazel, Cargo workspaces, Go workspace, Lerna, Moon, Nx, Pants, Rush, Turborepo, Yarn workspaces, pnpm workspaces.
+
+**Environment:** Flipper, JetBrains IDE, LaunchDarkly, Mise, Unleash, VS Code, Volta, asdf, direnv, dotenv, pyenv.
+
+**i18n:** Crowdin, Fluent, FormatJS, Lingui, Rails i18n, Transifex, gettext, i18next, vue-i18n.
+
+**Release:** Changesets, cargo-release, conventional-changelog, git-cliff, np, release-please, semantic-release, standard-version, twine.
+
+**Coverage:** Codecov, Coveralls, Excoveralls, JaCoCo, Sentry, SimpleCov, c8, cargo-tarpaulin, coverage.py, go test -cover, nyc.
+
+**Dep Updates:** Dependabot, Git Submodules, Renovate.
+
+Run `brief list tools` for the full list.
+
+## How it works
+
+[](https://github.com/git-pkgs/brief#how-it-works)
+
+Detection rules are data, not code. Each tool is defined in a TOML file under `knowledge/`, organized by ecosystem. Adding a new tool is a single TOML file with no Go code changes.
+
+[tool]
+name = "RSpec"
+category = "test"
+default = true
+homepage = "https://rspec.info"
+description = "BDD testing framework for Ruby"
+
+[detect]
+files = ["spec/", ".rspec"]
+dependencies = ["rspec", "rspec-core"]
+
+[commands]
+run = "bundle exec rspec"
+alternatives = ["rake spec", "rspec"]
+
+[config]
+files = [".rspec", "spec/spec_helper.rb"]
+
+[taxonomy]
+role = ["testing-framework"]
+function = ["testing"]
+
+[[security.sinks]]
+symbol = "let!"
+threat = "dos"
+cwe = "CWE-400"
+note = "Example only; RSpec doesn't actually have security sinks"
+
+The `default = true` flag marks a tool as the canonical choice for its category in that ecosystem. The `brief missing` command uses this to suggest the right tool when a category is absent.
+
+Tool definitions can carry two optional sections. `[taxonomy]` classifies what the tool does using terms from [oss-taxonomy](https://github.com/ecosyste-ms/oss-taxonomy): `role` (framework, library, linter), `function` (api-development, templating, data-mapping), `layer` (backend, frontend, data-layer), `domain` (web-development, blockchain). These tags pass through to the JSON output and drive the `threat-model` command. `[[security.sinks]]` lists known dangerous methods with their CWE references, used by the `sinks` command. Both are optional and populated incrementally.
+
+Detection uses five primitives: file/directory presence, dependency names from parsed manifests, file content matching, structured key existence (JSON/TOML), and ecosystem filtering to prevent cross-language false positives.
+
+## Library usage
+
+[](https://github.com/git-pkgs/brief#library-usage)
+
+The detection engine, knowledge base, and reporters are separate Go packages. Import them directly instead of shelling out to the binary:
+
+import (
+    "github.com/git-pkgs/brief"
+    "github.com/git-pkgs/brief/kb"
+    "github.com/git-pkgs/brief/detect"
+    "github.com/git-pkgs/brief/report"
+)
+
+knowledgeBase, _ := kb.Load(brief.KnowledgeFS)
+engine := detect.New(knowledgeBase, "/path/to/project")
+r, _ := engine.Run()
+report.JSON(os.Stdout, r)
+
+## Contributing
+
+[](https://github.com/git-pkgs/brief#contributing)
+
+Adding a new tool: create a TOML file in the appropriate ecosystem directory under `knowledge/`, add test fixtures in `testdata/`, run `go test ./...`.
+
+Adding a new ecosystem: create a directory under `knowledge/`, add `language.toml` plus at least a package manager, test framework, and linter.
+
+See [CONTRIBUTING.md](https://github.com/git-pkgs/brief/blob/main/CONTRIBUTING.md) for detection primitives and category definitions.
+
+## License
+
+[](https://github.com/git-pkgs/brief#license)
+
+MIT
