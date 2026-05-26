@@ -6,7 +6,6 @@ title: How To Remove Docker Images, Containers, and Volumes | DigitalOcean
 tags:
   - docker
   - volumes
-  - Moodle-in-English/-The-rate-of-upgrading-Moodle-and-the-significance-of-the-LTS-Moodle-org
 ---
 
 ### [Introduction](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes#introduction)
