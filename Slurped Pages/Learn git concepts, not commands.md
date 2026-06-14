@@ -105,8 +105,6 @@ When you have added all your changes (which right now is only adding Bob), you'r
 
 The collected changes that you _commit_ are some meaningful chunk of work, so when you now run `git commit` a text editor will open and allow you to write a message telling everything what you just did. When you save and close the message file, your _commit_ is added to the _Local Repository_.
 
-[![Committing to the local repo](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2ex85fbz2mkvhjv8euww.png)](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F2ex85fbz2mkvhjv8euww.png)
-
 You can also add your _commit message_ right there in the command line if you call `git commit` like this: `git commit -m "Add Bob"`. But because you want to write [good commit messages](https://chris.beams.io/posts/git-commit/) you really should take your time and use the editor.
 
 Now your changes are in your local repository, which is a good place for the to be as long as no one else needs them or you're not yet ready to share them.
@@ -379,8 +377,6 @@ In the diagram below you see how our commit history now looks. Both _master_ and
 
 If you now `git merge change_alice` a fast-forward merge is not possible. Instead your favorite text editor will open and allow you to change the message of the `merge commit` git is about to make in order to get the two branches back together. You can just go with the default message right now. The diagram below shows the state of our git history after we the `merge`.
 
-[![Merging branches](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fns2g50cds1261ybl7zvb.png)](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fns2g50cds1261ybl7zvb.png)
-
 The new commit introduces the changes that we've made on the `change_alice` branch into master.
 
 As you'll remember from before, revisions in git, aren't only a snapshot of your files but also contain information on where they came from from. Each `commit` has one or more parent commits. Our new `merge` commit, has both the last commit from _master_ and the commit we made on the other branch as it's parents.
@@ -553,8 +549,6 @@ Because it has been a while, lets have another look at the components of git:
 
 Just like your _Dev Environment_ everyone else working on the same source code has theirs.
 
-[![many dev environments](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fg73azyk7at0p4impmh8b.png)](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fg73azyk7at0p4impmh8b.png)
-
 All of these _Dev Environments_ have their own _working_ and _staged_ changes, that are at some point `committed` to the _Local Repository_ and finally `pushed` to the _Remote_.
 
 For our example, we'll use the online tools offered by _GitHub_, to simulate someone else making changes to the _remote_ while we work.
@@ -562,8 +556,6 @@ For our example, we'll use the online tools offered by _GitHub_, to simulate som
 Go to your `fork` of this repo on [github.com](https://www.github.com/) and open the `Alice.txt` file.
 
 Find the edit button and make and commit a change via the website.
-
-[![github edit](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzkps04oj6azys64thk50.png)](https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fzkps04oj6azys64thk50.png)
 
 In this repository I have added a remote change to `Alice.txt` on a branch called `fetching_changes_sample`, but in your version of the repository you can of course just change the file on `master`.
 

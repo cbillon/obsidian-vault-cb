@@ -22,7 +22,7 @@ Delta works on a large variety of operating systems—check out [[https://dandav
 
 Afterwards, dive into [[https://dandavison.github.io/delta/introduction.html|the extensive official delta documentation]] to set up delta with Git and customize it to your style.
 
-You can see the source code on GitHub at [[https://github.com/dandavison/delta|dandavison/delta]].
+You can see the source code on GitHub at [delta](https://github.com/dandavison/delta).
 
 
 

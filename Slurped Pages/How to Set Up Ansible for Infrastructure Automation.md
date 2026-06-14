@@ -183,6 +183,11 @@ https_port=443
 [databases:vars]
 db_port=5432
 ```
+note CB
+https://docs.ansible.com/projects/ansible-core/2.17/reference_appendices/interpreter_discovery.html
+Add in [defaults]
+interpreter_python = /usr/bin/python3
+
 
 Verify your inventory is parsed correctly:
 

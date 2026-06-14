@@ -178,3 +178,5 @@ In this situation, when running the container, we’ll see how Docker ignores an
 ## 7. Conclusion
 
 In this article, we’ve seen the differences and similarities between the Docker instructions: _run_, _cmd,_ and _entrypoint_. We’ve observed at what point they get invoked. Also, we’ve taken a look at their uses and how they work together.
+
+see [[Dockerfile ENTRYPOINT script bash]]
