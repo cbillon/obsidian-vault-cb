@@ -13,7 +13,7 @@ tags:
 
 [Composer](https://getcomposer.org/) is the goto method of adding dependencies in modern PHP application. You search for a library for a concerned functionality and you’ll probably find the one in the large database of the [Pacakgist](https://packagist.org/). But there comes a time where you’d want to use a library which is private and should be only available to you. Well, the good news is, you can achieve this using this trick.
 
-This can be accomplished by specifying `repositories` you can get packages from elsewhere. This includes private repositories as well. For you to use a private repo as a composer pacakge, you need to declare the required repository in the `repositories` field in the `composer.json` of your project. Here’s a sample of how you can achieve this.
+This can be accomplished by specifying `repositories` you can get packages from elsewhere. This includes private repositories as well. For you to use a private repo as a composer package, you need to declare the required repository in the `repositories` field in the `composer.json` of your project. Here’s a sample of how you can achieve this.
 
 ```
 {
