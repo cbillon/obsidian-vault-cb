@@ -7,7 +7,7 @@ tags:
 
 Please see:
 
-[https://docs.moodle.org/502/en/Installing_plugins](https://docs.moodle.org/502/en/Installing_plugins)
+[https://docs.moodle.org/503/en/Installing_plugins](https://docs.moodle.org/503/en/Installing_plugins)
 
 [https://moodledev.io/general/development/tools/composer](https://moodledev.io/general/development/tools/composer)
 

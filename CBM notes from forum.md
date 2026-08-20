@@ -3,6 +3,26 @@ tags:
   - moodle
   - cbm
 ---
+## upgrade vs migrate
+
+==An **app upgrade** updates software to a newer version on the same system, while an **app migration** moves an application to a completely new environment, platform, or underlying architecture==. 
+
+App Upgrade
+
+- **Definition:** Installing a newer version of software on your current infrastructure.
+
+- **Scope:** Keeps the core architecture, platform, and setup mostly the same.
+
+- **Goal:** Fix bugs, patch security holes, and add new features.
+
+- **Process:** Usually fast, direct, and done "in-place". 
+
+App Migration
+
+- **Definition:** Moving an application to a new environment, host, or framework.
+
+- **Scope:** Changes where or how the app runs (such as moving from local servers to the Cloud Provider Services or changing tech stacks).
+
 ## from David Pesce
 1. Quick reminder to check your AMD builds. CAMP now rebuilds minified js from source at each release tag and compares it byte for byte. Everything we've found so far is benign (a build file whose source was never committed, builds older than their source), but minified code that doesn't match its source is effectively unreviewable, and your own CI can't catch that since it runs whatever the repo contains. Worth a minute: make sure every amd/build file has its amd/src counterpart committed, and rerun grunt amd after source changes. Releases that match get a "rebuilt, byte for byte" note on their listing; mismatches show as warn-only notes that clear on your next consistent release.
     
@@ -30,6 +50,8 @@ In my many years experience, I've never regretted learning a 'plan B' in case 'p
 not a one-off check.
 As the Germans say, “_Vertrauen ist gut, kontrolle ist besser._”  
 "Simplicity is not the absence of power. It is power without pretense." ~ Atiksh Sharma
+
+There were long discussions about the question bank design in the quiz forum - and elsewhere. But, as Marcus has said, that ship sailed years ago.
 ## Reflexion
 
 Price too high
@@ -56,7 +78,56 @@ On your plugin's Developer zone pahe you can see how long your plugin has spent 
 
 Thank you for your understanding and patience.(https://moodledev.io/general/community/plugincontribution), [2](https://moodle.org/mod/forum/discuss.php?d=394018)]
 
+## Plugin subtype
 
+Originally I introduced the `plugintypes` object as a one-to-one replacement for the legacy `subplugins.php` file.
+
+When I performed the directory restructure of Moodle I realised that we actually need to calculate the path relative to the new _root_ directory, because not all plugins will be in the the `public` folder in the future. We know that the subplugins will always (for the time being) live as a subdirectory of the parent plugin, so we actually only need the part after this in the path.
+
+To handle this we have added a new `subplugintypes` object which contains the same data,m but without the full path to the plugin. The legacy data is no longer used, except if the `subplugintypes` data is not provided, but is available for two reasons:
+
+1. in the contrib plugin world it's kept to allow a plugin to support multiple Moodle versions; and
+2. we wanted to give people a chance to update any CLI tooling which currently reads the `subplugins.json`
+
+You can find the documentation for this file here: [https://moodledev.io/general/development/tools/metadata#subplugins](https://moodledev.io/general/development/tools/metadata#subplugins)
+
+The `plugininfo` class is a class in `[parent/plugin/path]/classes/plugininfo/[subpluginname].php` which extends `\core\plugininfo\base`. You can see an example here: [https://github.com/moodle/moodle/blob/main/public/mod/assign/classes/plugininfo/assignfeedback.php](https://github.com/moodle/moodle/blob/main/public/mod/assign/classes/plugininfo/assignfeedback.php)
+
+It provides the system information about things like:
+
+- can the plugin be uninstalled
+- how are settings loaded
+- what plugins are available
+- are plugins ordered in some fashion?
+- and so on.
+
+You can find the source of this file here: [https://github.com/moodle/moodle/blob/main/public/lib/classes/plugininfo/base.php](https://github.com/moodle/moodle/blob/main/public/lib/classes/plugininfo/base.php)
+
+There is a little bit of information about it in the legacy developers docs here: [https://docs.moodle.org/dev/Subplugins#plugininfo_class](https://docs.moodle.org/dev/Subplugins#plugininfo_class)
+
+## Composer
+We are not satisfied with the security model of Composer. We believe a package manager has a substantial burden to protect and inform users, and that Composer currently fails to uphold that burden.
+
+When you type composer require package/name, you implicitly trust both packagist.org and the package owner on packagist.org, who is unverifiable and not vetted. This default chain of trust is not made obvious to many users, and the package upstream may be essentially uninvolved. The circumstances in which packagist.org makes package changes are not documented, the changes are not signed, and these changes are not auditable. Package owners on packagist.org are not verifiable, changes they make are not signed, and their changes are not auditable. There is no chain of trust between the package upstream and packagist.org. None of this is very clear to the average user.
+
+You can find more details on a specific case of this at: [https://github.com/phacility/xhprof/pull/40](https://github.com/phacility/xhprof/pull/40)
+
+We may support Composer in the future, but this upstream's attitudes toward security are currently very different from Composer's attitudes toward security.
+
+We understand that a lot of users don't care about this, and Composer works well and is easy to use, but this is important to us.
+
+### Proposed resolution
+
+Figure out why, and perhaps try to get all Drupal projects listed on [https://packagist.org/](https://packagist.org/)?
+
+Would this do the job? If yes, we could add it as a recommended step of maintaining Drupal contrib modules:
+
+> **GitLab Service**  
+> To enable the GitLab service integration, go to your GitLab repository, open the Settings > Integrations page from the menu. Search for Packagist in the list of Project Services. Check the "Active" box, enter your packagist.org username and API token. Save your changes and you're done.
+
+From [https://packagist.org/about](https://packagist.org/about)
+
+Or, instead of requiring the individual contrib module maintainers to do this, perhaps a drupal.org staff member has the permissions to set this for all contrib modules and themes on GitLab?
 
 Git tag immutable
 steady state, push a git tag

@@ -9,7 +9,7 @@ tags:
 # Foreword
 
 [](https://sourceacademy.org/sicpjs/foreword02#p1)
-
+c
 I had the pleasure of meeting the amazing Alan Perlis and talking with him a few times, when I was still a student. He and I had in common a deep love and respect for two very different programming languages: Lisp and APL. Following in his footsteps is a daunting task, even though he blazed an excellent trail. Still, I would like to reexamine one comment he made in the original foreword to this book (and, please, I suggest that you read _his_ foreword, which immediately follows this one, before you finish this one). Is it really true that it is better to have 100 functions operate on one data structure than to have 10 functions operate on 10 data structures?
 
 [](https://sourceacademy.org/sicpjs/foreword02#p2)
