@@ -47,8 +47,7 @@ de cette sémantique nativement.*
 **En clair :** Camp prouve automatiquement que chaque package de plugin publié a été compilé, octet par octet, à partir du code source public
 dont il prétend provenir. Cette preuve est tout aussi précieuse sur une plateforme de vente.
 
-La Marketplace pourrait l'afficher ou l'exiger pour ses propres annonces. La publication en elle-même ne comporte aucun risque de vol : un auteur publie en ajoutant une étiquette de version. Ce qui reste distinct, c'est l'*opinion* de chaque
-organisation sur un plugin (avis, recommandations,curation) : ces avis restent clairement identifiés par leur auteur.
+La Marketplace pourrait l'afficher ou l'exiger pour ses propres annonces. La publication en elle-même ne comporte aucun risque de vol : un auteur publie en ajoutant une étiquette de version. Ce qui reste distinct, c'est l'*opinion* de chaque organisation sur un plugin (avis, recommandations,curation) : ces avis restent clairement identifiés par leur auteur.
 
 *Pour le lecteur technique : reconstruction déterministe à l'étiquette,comparaison des hachages,registre des versions en ajout uniquement, analyse antivirus (RFC §4.2), avec signature TUF et journalisation de transparence prévus (§4.3). La publication est une publication de confiance OIDC : l’intégration continue (CI) présente une déclaration d’identité signée,
 
@@ -57,22 +56,17 @@ grâce à l’identifiant immuable du dépôt, et c’est le service, et non le 
 
 ## 4. Un canal unique d’alerte de sécurité
 
-**En clair :** si un plugin présente une faille de sécurité, tous les sites l’utilisant
-doivent être avertis, quelle que soit sa provenance. Les alertes sont la seule chose qui ne devrait jamais faire l’objet de concurrence. Le système d’alerte de Camp
-est opérationnel dès aujourd’hui ; nous proposons un tri coordonné et une règle selon laquelle les deux systèmes alertent sur tout.
+**En clair :** si un plugin présente une faille de sécurité, tous les sites l’utilisant doivent être avertis, quelle que soit sa provenance. Les alertes sont la seule chose qui ne devrait jamais faire l’objet de concurrence. Le système d’alerte de Camp est opérationnel dès aujourd’hui ; nous proposons un tri coordonné et une règle selon laquelle les deux systèmes alertent sur tout.
 
 *Pour le lecteur technique : les flux d’alertes sont unifiés côté client ; le flux de chaque
 dépôt activé est comparé à tous les plugins installés.
 
-La révocation reste Limité au dépôt de publication. CAMP-2026-0001
-
-à 0003 : publiés avec divulgation coordonnée dès la première semaine ;
+La révocation reste Limité au dépôt de publication. CAMP-2026-0001 à 0003 : publiés avec divulgation coordonnée dès la première semaine ;
 CAMP-2026-0004 à 0006 : retraits non liés à la sécurité d’enregistrements de publication défectueux le registre d’ajout uniquement se corrige automatiquement publiquement. Les vulnérabilités principales restent du ressort exclusif du siège ; camp gère uniquement les plugins tiers (RFC §3).*
 
 ## 5. L’archive permanente
 
-**En clair :** camp conserve chaque version de plugin publiée dans une
-archive qui ne peut être ni modifiée ni supprimée discrètement, pendant au moins sept ans. Les stocks des boutiques sont renouvelés ; les écosystèmes ont besoin de mémoire.
+**En clair :** camp conserve chaque version de plugin publiée dans une archive qui ne peut être ni modifiée ni supprimée discrètement, pendant au moins sept ans. Les stocks des boutiques sont renouvelés ; les écosystèmes ont besoin de mémoire.
 
 La Marketplace n’a jamais à gérer cela, et « retiré de la vente » ne signifie jamais « effacé de l’historique ».
 
@@ -80,10 +74,7 @@ La Marketplace n’a jamais à gérer cela, et « retiré de la vente » ne si
 
 ## 6. Installation dans Moodle
 
-**En clair :** l'état final que les utilisateurs méritent : un administrateur ouvre
-son site Moodle, effectue une recherche et installe des plugins, les plugins de la communauté et de la Marketplace apparaissant côte à côte, clairement identifiés. C'est
-l'élément que seul le siège social peut pleinement exploiter, et celui qui rend les deux
-surfaces meilleures que chacune prise séparément.
+**En clair :** l'état final que les utilisateurs méritent : un administrateur ouvre son site Moodle, effectue une recherche et installe des plugins, les plugins de la communauté et de la Marketplace apparaissant côte à côte, clairement identifiés. C'est l'élément que seul le siège social peut pleinement exploiter, et celui qui rend les deux surfaces meilleures que chacune prise séparément.
 
 *Pour le lecteur technique : la surface de mise à jour/installation du noyau Moodle
 utilise le format de dépôt, via le modèle de plugin client ou nativement. La prise en charge de plusieurs dépôts est déjà conçue (DESIGN.mdD21) : fusion en PHP, liaison à l'installation, politique de niveau minimum par dépôt.*
@@ -126,8 +117,7 @@ les versions d'auteurs externes sont distribuées selon le flux de travail stand
 trois retraits non liés à la sécurité ont corrigé des enregistrements de publication défectueux,
 ce à quoi ressemble un registre d'ajout uniquement.
 
-- **La politique d'espace de noms a été appliquée avec succès à deux reprises.** Un conflit de noms entre deux plugins non liés est en cours de traitement, conformément à une politique de notification écrite et de délai de préavis. Par ailleurs, un mainteneur a volontairement attribué le nom d'un composant au plugin de production qui
-le méritait ; le transfert a duré une journée et est documenté publiquement.
+- **La politique d'espace de noms a été appliquée avec succès à deux reprises.** Un conflit de noms entre deux plugins non liés est en cours de traitement, conformément à une politique de notification écrite et de délai de préavis. Par ailleurs, un mainteneur a volontairement attribué le nom d'un composant au plugin de production qui le méritait ; le transfert a duré une journée et est documenté publiquement.
 
 - **La communauté effectue le nettoyage spontanément.** Dix-huit listes inactives ont été supprimées à la demande de leurs propres mainteneurs, sans aucune question, par certains des développeurs les plus respectés de l'écosystème, dont plusieurs ont revendiqué leurs plugins actifs le jour même.
 

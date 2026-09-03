@@ -1,3 +1,347 @@
+
+
+1. Updates/Upgrades and Changes to Moodle Administration: Introducing the New Directory Structure in 5.1 and Composer for Moodle 5.2
+
+![](https://moodle.org/theme/image.php/moodleorg/forum/1787212466/monologo?filtericon=1)
+
+# Installing and upgrading help
+
+### Updates/Upgrades and Changes to Moodle Administration: Introducing the New Directory Structure in 5.1 and Composer for Moodle 5.2
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), mercredi 19 août 2026, 21:42
+
+Nombre de réponses : 23
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+Adams Jenkins aka WiseCat summarizes the recurring topics in this forum that were introduced by Moodle 5.1 and 5.2 in his presentation at the MoodleMoot Estonia, July 2026:
+
+**Updates, Upgrades and Changes to Moodle Administration**  
+[https://www.youtube.com/watch?foo=bar&v=izVUPboucNk](https://www.youtube.com/watch?foo=bar&v=izVUPboucNk)
+
+It covers a couple of topics:
+
+1. When to Update/Upgrade
+2. Directory Structure Changes
+3. Composer is here
+4. Router is here, Router is coming
+5. What about people on shared hosting?
+
+Since they are widely different topics, I suggest opening a sub-thread for each topic -  with matching subject line (like [here](https://moodle.org/mod/forum/discuss.php?d=482322#p1909848)).
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909847&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### 1) When to Update/Upgrade
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), mercredi 19 août 2026, 22:10
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+Out of the two messages, "Follow point releases every two months" is convincing the second message, "Not to go LTS to LTS" is controversial. If that is the truth, why all this hullaboo about LTS?
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909848&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Ken Task](https://moodle.org/pluginfile.php/20282/user/icon/moodleorg/f1?rev=1 "Avatar Ken Task")
+
+### 1) When to Update/Upgrade
+
+par [Ken Task](https://moodle.org/user/view.php?id=141618&course=5), jeudi 20 août 2026, 01:38
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+Me thinks ... 
+
+**From an LTS to the next LTS - hyperjump ... NO!**  
+4.5 highest is now .13  
+to the next LTS (which hasn't been released yet)  
+would skip 5.0 - which had 9 point releases  
+would skip 5.1 = which is now .6  
+would skip 5.2 - which is now .2
+
+That's a minimum of 17 updates ... some minor ... some not.
+
+From moodle [https://moodledev.io/general/releases](https://moodledev.io/general/releases)
+
+_Minor (Point) (eg. 3.x.y) 2 monthly February, April, June, August, October, December_  
+(but I've seen point releases nearly every week - some minor and some not!).
+
+_Minor releases dates differ slightly from release to release depending on the timing of public holidays in Western Australia._
+
+4.5 introduced Router but it wasn't really active.  
+5.0 no Router change ...  
+**BIG changes  ...**   
+5.1 introduced new structure and router now in play.   
+5.2 router more in play.
+
+MoodleMarket Place for plugins a factor + updates to plugins to be compat with core.
+
+Presenter did mention the issue with shared hosting, but I can state for a fact that update/upgrades issues exist with VPS's - depending upon [hosting provider](https://moodle.org/mod/glossary/showentry.php?eid=22&displayformat=dictionary "Glossary of common terms : hosting provider").
+
+Sooooooooo .... only thing that is certain ... change!
+
+'SoS', Ken
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909851&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar James Steerpike](https://moodle.org/pluginfile.php/1879320/user/icon/moodleorg/f1?rev=2377205 "Avatar James Steerpike")
+
+### 1) When to Update/Upgrade
+
+par [James Steerpike](https://moodle.org/user/view.php?id=1736745&course=5), jeudi 20 août 2026, 01:42
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+Wisecat makes a clear distinction between updates and upgrades, one that is perhaps not well understood. Updates are essential as he points out in a another video and every point release ( ie 5.2.**2**) should be done within a week of that release before the security holes fixed are publicly released. Upgrades are  optional ( as long as security patches are supported) and not a decision a SysAdmin makes. What was not mentioned in the video was the process of checking plugins, teaching workflows and teacher training on required new features after each upgrade. The decision to do this 4 times as often as required for LTS may not suit everyone.
+
+Moyenne des évaluations [Useful (1)](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909852&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### 1) When to Update/Upgrade
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), jeudi 20 août 2026, 03:50
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+Yeah, in an "update/upgrade" discussion one has to use certain terms consistently. Wisecat uses the same terms as in [https://moodledev.io/general/releases](https://moodledev.io/general/releases), which makes sense.  
+  
+For example, limiting ourselves to existing releases (not future releases),  
+- 4.5, 5.0, 5.1,.. are major releases, what the community casually call Moodle versions  
+- 4.5.0, 4.5.1,.. 4.5.13, 5.0.0, 5.0.1,.. 5.0.9 are minor or point releases or just releases.  
+- Any transition, say from 4.5.x to 4.5.y are updates  
+- Every transition, say 4.5.x to 5.0.y, or from 4.5.x to 5.1.z are upgrades  
+  
+Wisecat's message is,  
+a) keep your Moodle updated to the most recent point release. Today, if you are on 4.5, it needs to be 4.5.13 from 10 August 2026 - which is not disputed.  
+  
+b) Also follow every major release. So, today you must be either
+
+- on 5.2, then on 5.2.2 to be exact, next major being 5.3 before October 2027, or
+
+- on 5.1, then on 5.1.6 to be exact, next major being 5.2 before April 2027, 
+
+as opposed to being on 4.5, 4.5.13 to be exact, next major being 5.3 before October 2027 - the "LTS to LTS" strategy. That is where the controversy is.
+
+Yes, if you follow Wisecat's advice, there will be a new major (upgrade) every 6 months, whereas if you follow the "LTS to LTS" strategy, you need a major (upgrade) only every 2 years.
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909853&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### 2) Directory Structure Changes
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), jeudi 20 août 2026, 04:02
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+**On 2) Directory Structure Changes**
+
+This has been thoroughly discussed in this forum. Only a small change, point the DocumentRoot of the site to /PATH/TO/MOODLE/public - provided that your Moodle site is on the [domain](https://moodle.org/mod/glossary/showentry.php?eid=17&displayformat=dictionary "Glossary of common terms : domain"), [https://example.com/](https://example.com/) or [https://something.example.com/](https://something.example.com/). If your Moodle has a path, [https://example.com/path/](https://example.com/path/), then you need a symlink.
+
+Interestingly, Wisecat advises the symlink even if the site is on the domain, i.e. the symlink is not a must, arguing that it improves security.
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909854&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar James Steerpike](https://moodle.org/pluginfile.php/1879320/user/icon/moodleorg/f1?rev=2377205 "Avatar James Steerpike")
+
+### 1) When to Update/Upgrade
+
+par [James Steerpike](https://moodle.org/user/view.php?id=1736745&course=5), jeudi 20 août 2026, 05:43
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+Ken,
+
+Just for interest, why would a hosting provider cause update or upgrade issues on a VPS?
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909856&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Ken Task](https://moodle.org/pluginfile.php/20282/user/icon/moodleorg/f1?rev=1 "Avatar Ken Task")
+
+### 1) When to Update/Upgrade
+
+par [Ken Task](https://moodle.org/user/view.php?id=141618&course=5), jeudi 20 août 2026, 07:27
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+Yeah!  I don't get it either ... but ... have run across one ... SG!
+
+SG strat - fewer customers on each [VM](https://moodle.org/mod/glossary/showentry.php?eid=10474&displayformat=dictionary "Glossary of common terms : VM") and call them VPS's ... but with higher limitations/caps.   Can't change document root.   Must contact tech support to request, but responses from support staff offer 2 alternatives ... .htaccess (on nginx) or symlinks for public_html.   There are about 6 PHP settings that cannot be changed.   SG says they are set optimal for 'most customers' - but 'most customers' don't choose SG for hosting multiple moodles.  About ALL hosting providers, they do WordPress and do it well.   Have and developing their own Panel ... not cPanel/[Plesk](https://moodle.org/mod/glossary/showentry.php?eid=10385&displayformat=dictionary "Glossary of common terms : Plesk") (the well-knowns) - no Terminal ... and there might not be [Git](https://moodle.org/mod/glossary/showentry.php?eid=10110&displayformat=dictionary "Glossary of common terms : Git") either.
+
+Am hoping one of the entities am attempting to assist with SG will setup a 'collaborator' account so I can explore more.   So far that's been a very slow process.
+
+Of course, we get to 'pointing the finger' ... customer has hosted with SG for years without issues ... until decision made to upgrade to 5.2 from 4.5.x.  'Never had to do that before!!!!' is commonly expressed.   And, don't really appreciate hearing "we're not in Kansas anymore, Toto!" ![triste](https://moodle.org/theme/image.php/moodleorg/core/1787212466/s/sad "triste")
+
+'SoS', Ken
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909859&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Ken Task](https://moodle.org/pluginfile.php/20282/user/icon/moodleorg/f1?rev=1 "Avatar Ken Task")
+
+### 1) When to Update/Upgrade
+
+par [Ken Task](https://moodle.org/user/view.php?id=141618&course=5), jeudi 20 août 2026, 07:43
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+This might be better described using git.
+
+If on 4.5.x, only a git pull (if using branches) is required to get the most recent 4.5.x core code.
+
+If on 4.5.x, to 'upgrade' to 5.0, or 5.1, or 5.2, one must issue a couple more commands to tell git the branch to track and to acquire the higher version core code.  In git version numbers: 500, 501, 502, and soon to be released 503 (think of the 0's as a 'point').
+
+Moodle has never had a way to update/upgrade in the Admin interface.   But it sure has been misleading for some when going to Notifications and one sees a [download](https://moodle.org/mod/glossary/showentry.php?eid=18&displayformat=dictionary "Glossary of common terms : download") button for every higher version shown there - suggesting they can easily 'hyperjump'!
+
+'SoS', Ken
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909861&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### 5) What about people on shared hosting?
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), jeudi 20 août 2026, 07:49
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+On
+
+**5) What about people on shared hosting?  
+**[https://www.youtube.com/watch?foo=bar&v=izVUPboucNk](https://www.youtube.com/watch?foo=bar&v=izVUPboucNk)  starting 25:00
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909862&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### Upgrading to Moodle 5 on Siteground
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), jeudi 20 août 2026, 07:52
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+Ken  
+  
+Probably you mean [Upgrading from 4.5.8 to 5.2 broke on Siteground](https://moodle.org/mod/forum/discuss.php?d=482245#p1909717)? Isn't it a very specific case of the 1) When to Update/Upgrade topic in the presentation? As it  seems Siteground is specially nasty trying to sell shared hosting labeled as VPS. (From what you've reported, no first hand knowledge.)  
+  
+
+Aren't we are at the final topic in the presentation, [5) What about people on shared hosting](https://moodle.org/mod/forum/discuss.php?d=482322#p1909862)?
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909863&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar James Steerpike](https://moodle.org/pluginfile.php/1879320/user/icon/moodleorg/f1?rev=2377205 "Avatar James Steerpike")
+
+### Upgrading to Moodle 5 on Siteground
+
+par [James Steerpike](https://moodle.org/user/view.php?id=1736745&course=5), jeudi 20 août 2026, 08:14
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+According to WC, doomed. The two questions:  
+1. Is it possible to set up the router and composer on most shared hosting sites?  
+2. Can the average SH user do the necessary configurations?  
+  
+And siteground are definitely being creative in labeling plans as VPS hosting.
+
+Moyenne des évaluations [Useful (1)](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909867&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Ken Task](https://moodle.org/pluginfile.php/20282/user/icon/moodleorg/f1?rev=1 "Avatar Ken Task")
+
+### Upgrading to Moodle 5 on Siteground
+
+par [Ken Task](https://moodle.org/user/view.php?id=141618&course=5), jeudi 20 août 2026, 08:42
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers")
+
+So, you can 'jabberwalk', but no one else can!   So we changed the subject line cause it's not related, huh?  Hmmmmm....
+
+SG ... 'first hand experience' at watching in a Zoom meeting and discovering [OP](https://moodle.org/mod/glossary/showentry.php?eid=10401&displayformat=dictionary "Glossary of common terms : OP") wasn't all that familiar with that interface. ![triste](https://moodle.org/theme/image.php/moodleorg/core/1787212466/s/sad "triste").  But that's also true of folks who have cPanel/Plesk/other - in my experience!
+
+'Shared hosted' folks took that path based purely on cost ... not knowing future needs of a moodle that grew!   In their defense, no one knows future of anything!
+
+But there are other 'catch 22's with shared hosting besides memory/space/frequency of running a process (cron) ... like inode limits.  No work-arounds there!
+
+Outta here ... said my 2 cents worth! ![sourire](https://moodle.org/theme/image.php/moodleorg/core/1787212466/s/smiley "sourire")
+
+'SoS', Ken
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909869&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### 5) What about people on shared hosting?
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), jeudi 20 août 2026, 08:43
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+For those who prefer not to watch videos, here is the transcript:  
+  
+25:02 And so talking about that, uh, shared hosting, you might find if you're if you're hosting your Moodle on  
+25:09 a shared hosting platform, uh, where you're not actually running the actual OS and every aspect of the [server](https://moodle.org/mod/glossary/showentry.php?eid=30&displayformat=dictionary "Glossary of common terms: server"), you  
+25:16 might find that hard because what configuration you can do to the web server configuration might be limited by your provider.  
+25:24 Every provider will be different in this aspect. So my take on that is that um shared hosting environments can't really  
+25:33 be claimed to be supported by Moodle because they're that's not shared hosting environments are not actually a  
+25:40 thing. They're a realm and so there's no way of supporting a realm. So I often like to say that  
+25:48 people on shared hosting, what about them? What you know, we don't want to leave them behind because we we still love you guys, but uh you're doomed. And  
+25:56 I mean doomed in terms of the game Doom, which  
+26:03 is a old uh 1993 shooter, first person shooter. I'm pretty sure everybody here would remember this game. But the cool  
+26:12 thing about Doom is that it spawned a meme called can it run Doom? And you find nowadays uh people running um smart  
+26:21 watches, they run Doom everywhere. And so instead of can you run Doom, it's I think in the future we have to be can it  
+26:28 run Moodle. And this is just the challenge that we're accepting if we're choosing not to use a VPS or bare metal  
+26:35 or um a platform where uh we have full control over the web server config. So  
+26:42 can you run Moodle on it? Well, you can run Doom on a that's a little um Adafruit board. Uh that's on an ATM.  
+26:49 Doom running on an ATM. That's it on a Super Mario Brothers game and on an Apple Watch uh on an old Kodak digital  
+26:57 camera from like that would be like the early n early 90s I want to say uh on an old calculator  
+27:05 on a printer and I don't know why you would want to run Doom on a printer but anyway it it has been done. So where are you going to run your Moodle?  
+27:15 Um, so my thoughts are on the whole idea of shared hosting and things like that.  
+27:20 There are complexities that are changing on Moodle. Moodle is changing. The way it's got to be admin is changing. We  
+27:26 have to adapt. We can't tell Moodle not to move forward with the router with composer. We can't we can't ask Moodle  
+27:34 to stop that. And I don't think Moodle should try to um make sure that uh if  
+27:41 we're not ready that they're waiting for us all the time. They shouldn't wait forever. Just progress forward and it's  
+27:48 our job to keep up with them. So, um I still though I do re I do respect though  
+27:55 that Moodle HQ tries really really hard to make sure everybody is well supported  
+28:01 and it's hard and respect to that. But I think it would be well my position is shared hosting environments should not really be supported.  
+28:11 So um anyway uh that's uh pretty much it for today.
+
+Summary:
+
+_But I think it would be well my position is shared hosting environments should not really be supported._
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909870&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar Visvanath Ratnaweera](https://moodle.org/pluginfile.php/2987/user/icon/moodleorg/f1?rev=2296189 "Avatar Visvanath Ratnaweera")
+
+### Upgrading to Moodle 5 on Siteground
+
+par [Visvanath Ratnaweera](https://moodle.org/user/view.php?id=41095&course=5), jeudi 20 août 2026, 08:49
+
+![Avatar Particularly helpful Moodlers](https://moodle.org/pluginfile.php/53/group/icon/1/f1?rev=1446108 "Avatar Particularly helpful Moodlers") ![Avatar Translators](https://moodle.org/pluginfile.php/53/group/icon/173/f1?rev=1446096 "Avatar Translators")
+
+Shared hosting "doomed". And for the answer to the two questions, pl. continue in its own topic  [5) What about people on shared hosting?](https://moodle.org/mod/forum/discuss.php?d=482322#p1909862)  
+  
+The specific case Siteground is better suited in its original discussion: [Upgrading from 4.5.8 to 5.2 broke on Siteground?](https://moodle.org/mod/forum/discuss.php?d=482245#p1909717)
+
+Moyenne des évaluations  [-](https://moodle.org/rating/index.php?contextid=133&component=mod_forum&ratingarea=post&itemid=1909871&scaleid=-88)Évaluer...Useful[](https://moodle.org/course/scales.php?id=5&list=1&scaleid=88)
+
+![Avatar James Steerpike|36](https://moodle.org/pluginfile.php/1879320/user/icon/moodleorg/f1?rev=2377205 "Avatar James Steerpike")
+
+par [James Steerpike](https://moodle.org/user/view.php?id=1736745&course=5), jeudi 20 août 2026, 10:37
+'Shared hosted' folks took that path based purely on cost '  
+Bluehost is offering shared hosting for $3.99 a month for a 36 month term, then $9.99 while a 1 vCPU Core. 2 GB DDR5 RAM with 50GB NVMe Storage VPS goes for $4.69 for the first 24 months, then $5.69.  
+Less than a dollar a month more for a VPS and cheaper once you are hooked.
+Shared hosting isn't being chosen on cost. It is chosen because a VPS was seen as being too difficult, not for the non techies but a shared hosting plan isn't so easy once Moodle needs more than just unzipping into public_html.
+
+![Avatar Andrew Lyons|45](https://moodle.org/pluginfile.php/76798/user/icon/moodleorg/f1?rev=2319149 "Avatar Andrew Lyons")
+
+### Shared Hosting problem
+
+par [Andrew Lyons](https://moodle.org/user/view.php?id=268794&course=5), lundi 20 octobre 2025, 14:55
+
+My issue with shared hosting is that you have little-to-no control over the software installed.  
+  
+For example, I recently installed a cPanel host on Namecheap, and they only offer version 10 of [Postgres](https://moodle.org/mod/glossary/showentry.php?eid=4363&displayformat=dictionary "Glossary of common terms : postgres"). That version was released in 2017, and went out of support in November 2022.
 ## Moodle :
  
  - application LAMP source PHP web server base de données  - source PHP - vcs git version X.Y.Z

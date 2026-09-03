@@ -1,0 +1,872 @@
+---
+link: https://github.com/rcieri/glab-tui
+site: GitHub
+excerpt: A terminal user interface (TUI) for GitLab/GitHub, built on top of
+  glab/gh. Browse issues, merge requests, pipelines, runners, and releases
+  without leaving your terminal. Built for personal use. - ...
+twitter: https://twitter.com/@github
+slurped: 2026-09-01T22:27
+title: "GitHub - rcieri/glab-tui: A terminal user interface (TUI) for
+  GitLab/GitHub, built on top of glab/gh. Browse issues, merge requests,
+  pipelines, runners, and releases without leaving your terminal. Built for
+  personal use."
+---
+
+[![glab-tui](https://github.com/rcieri/glab-tui/raw/main/assets/glab-tui-banner-v2.svg)](https://github.com/rcieri/glab-tui/blob/main/assets/glab-tui-banner-v2.svg)
+
+[![CI Status](https://github.com/rcieri/glab-tui/actions/workflows/rust.yml/badge.svg)](https://github.com/rcieri/glab-tui/actions/workflows/rust.yml) [![Crates.io](https://camo.githubusercontent.com/85c609ac37ba730e1eb404dc1c16d9ccdb194d50572d5f70787688249a71ef00/68747470733a2f2f696d672e736869656c64732e696f2f6372617465732f762f676c61622d7475692d63726174652e737667)](https://crates.io/crates/glab-tui-crate) [![GitHub Release](https://camo.githubusercontent.com/825fbcf8661796f9254a72f8b16bc36ac240293b2e2b5f914689c3ec45973f91/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f762f72656c656173652f7263696572692f676c61622d7475692e737667)](https://github.com/rcieri/glab-tui/releases/latest) [![Homebrew](https://camo.githubusercontent.com/c36da02db539e541c8308510e6c5e7fecf1f75b2d0916ec0b5d4e9d6c0d1acb1/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f762f72656c656173652f7263696572692f676c61622d7475693f6c6162656c3d686f6d6562726577)](https://github.com/rcieri/homebrew-glab-tui) [![Scoop](https://camo.githubusercontent.com/65459813af88d771eb3f5da9607a626585636417fe2ee5843be722d428cd6f75/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f762f72656c656173652f7263696572692f676c61622d7475693f6c6162656c3d73636f6f70)](https://github.com/rcieri/scoop-glab-tui) [![Docker](https://camo.githubusercontent.com/befe84612942d2e19520998911d6b227f1a930042f935f6685f1848f4f7a3faf/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f636b65722d676863722e696f253246726369657269253246676c61622d2d7475692d626c7565)](https://github.com/rcieri/glab-tui/pkgs/container/glab-tui) [![License](https://camo.githubusercontent.com/e47c96e9ee59600ba9d4fe86efb3d30dfd7da2c0fa4367dca864ee28627167fb/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f7263696572692f676c61622d7475692e737667)](https://github.com/rcieri/glab-tui/blob/main/LICENSE.md)
+
+A terminal user interface (TUI) for GitLab and GitHub, built on top of [`glab`](https://gitlab.com/gitlab-org/cli) and [`gh`](https://cli.github.com/). Browse issues, pull requests / merge requests, pipelines, runners, and releases without leaving your terminal.
+
+---
+
+## Table of Contents
+
+[](https://github.com/rcieri/glab-tui#table-of-contents)
+
+- [Features](https://github.com/rcieri/glab-tui#features)
+- [Demos](https://github.com/rcieri/glab-tui#demos)
+- [Prerequisites](https://github.com/rcieri/glab-tui#prerequisites)
+- [Installation](https://github.com/rcieri/glab-tui#installation)
+    - [Package Manager](https://github.com/rcieri/glab-tui#package-manager)
+    - [From source](https://github.com/rcieri/glab-tui#from-source)
+    - [With cargo install (from crates.io)](https://github.com/rcieri/glab-tui#with-cargo-install-from-cratesio)
+    - [Install script (Linux / macOS)](https://github.com/rcieri/glab-tui#install-script-linux--macos)
+    - [Install script (Windows)](https://github.com/rcieri/glab-tui#install-script-windows)
+    - [Docker](https://github.com/rcieri/glab-tui#docker)
+    - [Homebrew](https://github.com/rcieri/glab-tui#homebrew)
+    - [Scoop (Windows)](https://github.com/rcieri/glab-tui#scoop-windows)
+- [Configuration](https://github.com/rcieri/glab-tui#configuration)
+    - [Authentication](https://github.com/rcieri/glab-tui#authentication)
+    - [Config file](https://github.com/rcieri/glab-tui#config-file)
+    - [Custom themes](https://github.com/rcieri/glab-tui#custom-themes)
+    - [Editor](https://github.com/rcieri/glab-tui#editor)
+- [Usage](https://github.com/rcieri/glab-tui#usage)
+    - [Options](https://github.com/rcieri/glab-tui#options)
+    - [CLI subcommand examples](https://github.com/rcieri/glab-tui#cli-subcommand-examples)
+- [Filtering, Grouping & Columns](https://github.com/rcieri/glab-tui#filtering-grouping--columns)
+- [Key Bindings](https://github.com/rcieri/glab-tui#key-bindings)
+- [Dependencies](https://github.com/rcieri/glab-tui#dependencies)
+- [Project Structure](https://github.com/rcieri/glab-tui#project-structure)
+- [Running Tests](https://github.com/rcieri/glab-tui#running-tests)
+- [Releasing](https://github.com/rcieri/glab-tui#releasing)
+- [Contributing](https://github.com/rcieri/glab-tui#contributing)
+- [License](https://github.com/rcieri/glab-tui#license)
+
+---
+
+## Features
+
+[](https://github.com/rcieri/glab-tui#features)
+
+- **GitHub & GitLab Dual Support** — Automatic detection of repository host, dynamically translating TUI actions and metadata updates to `gh` or `glab` CLI commands.
+- **Mouse support** — click to navigate tabs, scroll tables, and interact with all overlays and modals
+- **Bulk editing & Visual Select Mode** — select multiple issues or merge requests with `Space` or enter yazi-style select mode with `v`, then press `e` to apply labels, assignees, or milestone across all selected items with full selection preview
+- **Single-Column Inspector** — unified fullscreen details preview and inline editing with full-width markdown description on top and stacked metadata fields below
+- **Interactive Submit Dialogs** — explicit Submit/Cancel confirmations with configurable options (squash, delete source branch, auto-merge) for mutating actions
+- **Issues** — list, filter, create, and edit issues (title, labels, assignees, milestone, due date, weight, confidentiality, description) with in-menu template selection
+- **Merge Requests / Pull Requests** — list, filter, create MRs from issues with auto-linking, approve, merge, view diffs in terminal with code reviews, and edit MR/PR metadata
+- **MR/PR review state at a glance** — color-coded **Approval** (`APPROVED`, `AWAITING`, `REVIEW REQ`, …), **Mergeable** (`CONFLICT`, `REBASE`, `CLEAN`), and **Workflow** (Returned / Review req / Yours / Approved / By others / Inactive) columns; rebase with `R`, revoke your approval with `A` (GitLab)
+- **Code Reviews & Diff View** — draft inline comments, multi-line selections, code suggestions with syntax highlighting, mark files as reviewed (`m`/`M`), and atomic review submission
+- **Side-by-Side Diff** — toggle between unified and side-by-side diff layouts with theme-aware syntax highlighting and tab-stop expansion
+- **Pipelines / Actions** — inspect pipelines and their jobs, retry/cancel pipelines/actions and individual jobs, stream build traces; trigger pipelines with `workflow_dispatch` input prompts
+- **Runners** — list runners with structured details panel; pause/resume, edit descriptions, and monitor live runner status
+- **Releases** — browse, create, and edit project releases directly in the terminal
+- **Todos / Notifications** — tab with badges, relative timestamps, fuzzy search, and an Updated column
+- **Milestones** — progress bar column, inline editing, and milestone issue caching
+- **Branches** — browse branches with default/protected markers; create and delete branches inline
+- **Environments & Deployments** — browse environments and their deployment status, drilling into deployment history with `Enter`
+- **Terminal** — live log of every `glab`/`gh` command the TUI executes, with success/failure status and unified error toasts
+- **Real label colors** — the Labels column renders each label with its actual color from the API (`glab label list` / `gh label list`), falling back to the theme palette for light GitHub-style background-fill colors; toggle with `fetch_label_colors` in `config.toml`
+- **Columns Config Modal** — press `Tab` / `,` to open a centered popup overlay to toggle column visibility (`Space`), group by any column, set sort order, page size, and theme
+- **Value-based Column Filtering** — press `Enter` on any column inside the configure popup to filter rows by that column's values (e.g. Issues → `State` → `opened`); multi-select supports multiple values per column
+- **Live Search** — fuzzy-filter across all visible columns by pressing `/`
+- **Global Search** — press `Ctrl+P` to fuzzy-search across all loaded issues and MRs from any tab
+- **Switch Repository** — press `Ctrl+S` to switch to another local repository without restarting
+- **Inline editing** — full edit menus with searchable multi-select selectors for labels, assignees, reviewers, and milestones
+- **Interactive Date Picker** — calendar widget for Due Date / Start Date fields in edit menus
+- **External editor** — descriptions and freeform fields open in your `$EDITOR` / `$VISUAL` (also via `Ctrl+E`)
+- **Self-update** — press `u` in the TUI (or run `glab-tui --update`) to check for and install updates
+- **CLI subcommands** — `doctor` (system diagnostics), `clean-cache` (stale cache cleanup), `cache` (list cached data), `open` (open entity in browser), `repos` (list recent repositories)
+- **Lazy-load tabs** — data for each tab is only fetched the first time you switch to it; refresh with `F5` / `Ctrl+R`
+- **Themes** — 18 built-in color themes (including `oled` and `github-dark-hc`); fully customizable via `config.toml` or custom `.toml` files
+- **Configurable keybindings** — every action is remappable in `~/.config/glab-tui/config.toml`
+
+---
+
+## Demos
+
+[](https://github.com/rcieri/glab-tui#demos)
+
+### Overview & Navigation
+
+[](https://github.com/rcieri/glab-tui#overview--navigation)
+
+Tab navigation across Issues, Merge Requests, Pipelines, Runners, and Releases with interactive detail scrolling and built-in help.
+
+[![Overview](https://github.com/rcieri/glab-tui/raw/main/assets/demo-overview.gif)](https://github.com/rcieri/glab-tui/blob/main/assets/demo-overview.gif)
+
+### Code Review & Diff View
+
+[](https://github.com/rcieri/glab-tui#code-review--diff-view)
+
+Review MR/PR diffs in unified or side-by-side view, navigate files, mark files as reviewed, and leave comments.
+
+[![Diff View](https://github.com/rcieri/glab-tui/raw/main/assets/demo-diff.gif)](https://github.com/rcieri/glab-tui/blob/main/assets/demo-diff.gif)
+
+### Fullscreen Preview & Inspector
+
+[](https://github.com/rcieri/glab-tui#fullscreen-preview--inspector)
+
+Inspect markdown descriptions, discussion threads, and metadata with zoomable single-column inspector views.
+
+[![Fullscreen Preview](https://github.com/rcieri/glab-tui/raw/main/assets/demo-preview.gif)](https://github.com/rcieri/glab-tui/blob/main/assets/demo-preview.gif)
+
+### Fuzzy Search & Column Configuration
+
+[](https://github.com/rcieri/glab-tui#fuzzy-search--column-configuration)
+
+Live fuzzy search across all visible columns, configure visible columns, group rows, and apply value-based column filters.
+
+[![Search & Configure](https://github.com/rcieri/glab-tui/raw/main/assets/demo-search.gif)](https://github.com/rcieri/glab-tui/blob/main/assets/demo-search.gif)
+
+### Field Editing & Selectors
+
+[](https://github.com/rcieri/glab-tui#field-editing--selectors)
+
+Inline entity editing with searchable multi-select overlays for labels, assignees, reviewers, and milestones.
+
+[![Field Editing & Selectors](https://github.com/rcieri/glab-tui/raw/main/assets/demo-selection.gif)](https://github.com/rcieri/glab-tui/blob/main/assets/demo-selection.gif)
+
+---
+
+## Prerequisites
+
+[](https://github.com/rcieri/glab-tui#prerequisites)
+
+|Requirement|Notes|
+|---|---|
+|**Rust** (stable, edition 2024)|Install via [rustup](https://rustup.rs/)|
+|**[`glab`](https://gitlab.com/gitlab-org/cli)** / **[`gh`](https://cli.github.com/)**|Either `glab` (for GitLab repos, authenticated via `glab auth login`) or `gh` (for GitHub repos, authenticated via `gh auth login`) must be on `$PATH`. You only need the CLI for the service you use.|
+|**`git`**|Used to auto-detect the current project from `git remote get-url origin`|
+|**A terminal emulator**|Any terminal that supports 256 colours and Unicode|
+
+> **Windows note:** the binary works on Windows. Editor integration uses `cmd /c` automatically when `$OS` is Windows.
+
+---
+
+## Installation
+
+[](https://github.com/rcieri/glab-tui#installation)
+
+### Package Manager
+
+[](https://github.com/rcieri/glab-tui#package-manager)
+
+|Package Manager / Channel|Installation Command|
+|---|---|
+|**Crates.io**|`cargo install glab-tui-crate`|
+|**GitHub Releases (Binaries)**|Manual / Self-update (`glab-tui -u`)|
+|**Homebrew**|`brew install rcieri/glab-tui/glab-tui`|
+|**Scoop (Windows)**|`scoop install glab-tui`|
+|**Docker Container**|`docker run --rm -it ghcr.io/rcieri/glab-tui`|
+
+### From source
+
+[](https://github.com/rcieri/glab-tui#from-source)
+
+git clone https://github.com/rcieri/glab-tui
+cd glab-tui
+cargo build --release
+# The binary is at ./target/release/glab-tui
+
+Copy the binary somewhere on your `$PATH`, e.g.:
+
+- **Linux / macOS**:
+    
+    cp target/release/glab-tui ~/.local/bin/
+    
+- **Windows (PowerShell)**:
+    
+    Copy-Item target\release\glab-tui.exe $env:USERPROFILE\.local\bin\
+    
+
+### With `cargo install` (from crates.io)
+
+[](https://github.com/rcieri/glab-tui#with-cargo-install-from-cratesio)
+
+cargo install glab-tui-crate
+
+### With `cargo install` (from the repo root)
+
+[](https://github.com/rcieri/glab-tui#with-cargo-install-from-the-repo-root)
+
+### Install script (Linux / macOS)
+
+[](https://github.com/rcieri/glab-tui#install-script-linux--macos)
+
+curl -sSfL https://raw.githubusercontent.com/rcieri/glab-tui/main/install.sh | sh
+
+Or with `wget`:
+
+wget -qO- https://raw.githubusercontent.com/rcieri/glab-tui/main/install.sh | sh
+
+The binary is installed to `~/.local/bin/` (configurable via `PREFIX` environment variable).
+
+### Install script (Windows)
+
+[](https://github.com/rcieri/glab-tui#install-script-windows)
+
+iwr -useb https://raw.githubusercontent.com/rcieri/glab-tui/main/install.ps1 | iex
+
+The binary is installed to `$env:USERPROFILE\.local\bin\` (configurable via `-Prefix` parameter).
+
+### Docker
+
+[](https://github.com/rcieri/glab-tui#docker)
+
+docker run --rm -it -v "$PWD:/workspace" ghcr.io/rcieri/glab-tui:latest
+
+The image includes both `glab` and `gh` CLIs and expects a Git repository mounted at `/workspace`.
+
+### Homebrew
+
+[](https://github.com/rcieri/glab-tui#homebrew)
+
+brew tap rcieri/glab-tui
+brew install glab-tui
+
+Installs the `glab-tui` binary on macOS (Intel and Apple Silicon) and Linux (x86_64 and ARM64) from the [homebrew-glab-tui](https://github.com/rcieri/homebrew-glab-tui) tap. Requires either `gh` or `glab` (only the CLI matching the repository hosting service you use is needed).
+
+### Scoop (Windows)
+
+[](https://github.com/rcieri/glab-tui#scoop-windows)
+
+scoop bucket add glab-tui https://github.com/rcieri/scoop-glab-tui.git
+scoop install glab-tui
+
+Installs `glab-tui` from the [scoop-glab-tui](https://github.com/rcieri/scoop-glab-tui) bucket. The manifest uses Scoop's `autoupdate` — version bumps are pulled automatically from GitHub releases.
+
+---
+
+## Configuration
+
+[](https://github.com/rcieri/glab-tui#configuration)
+
+### Authentication
+
+[](https://github.com/rcieri/glab-tui#authentication)
+
+`glab-tui` delegates all API calls to the `glab` or `gh` CLI depending on the hosting service (you only need to authenticate the one you use):
+
+glab auth login   # for GitLab repos
+gh auth login     # for GitHub repos
+
+The active project is detected automatically from the `origin` remote in the current working directory. For GitHub Enterprise or unusual hosting setups, set the backend explicitly in the repo-local config:
+
+backend = "github" # or "gitlab"
+
+The repo-local override takes precedence over automatic detection. Automatic detection recognizes `github.com` and checks both `gh auth status` and `glab auth status` for other hostnames; SSH aliases and hosts serving both platforms require the override.
+
+### Config file
+
+[](https://github.com/rcieri/glab-tui#config-file)
+
+The config file is optional; the app boots from in-memory defaults when none exists. To create one, press the **save view** keybinding (default `s`), which writes the current view layout to either `~/.config/glab-tui/config.toml` (global) or `.glab-tui/config.toml` (repo-local, when inside a git repo). Locations:
+
+```
+~/.config/glab-tui/config.toml          # Linux / macOS (XDG)
+$GLAB_TUI_CONFIG                         # override: set to the full file path
+```
+
+The generated file is fully annotated. Key sections:
+
+# Pick a built-in theme preset
+theme_preset = "default"   # default | tokyo-night | gruvbox | nord | catppuccin-mocha | dracula | oled | github-dark-hc | rose-pine | rose-pine-moon | rose-pine-dawn | clean | ...
+
+# Items per API request (1-100) — lower this if your GitLab instance truncates
+# large JSON response bodies. GitLab-only; GitHub paginates with --limit.
+# api_per_page = 100
+
+# Label colors: use the real colors from `label list` (GitLab/GitHub) when
+# available, falling back to the theme palette. Set to false to always use the
+# theme palette.
+# fetch_label_colors = true
+
+# Override individual colors (takes precedence over theme_preset)
+# [theme]
+# bg = "#121214"
+# border_focused = "#31bf67"
+# ...color tokens (see bundled themes for the full list)
+
+# Remap any keybinding
+[keybindings.global]
+next_tab = "l"
+# ...
+
+[keybindings.issues]
+create_issue = "n"
+edit_entity = "e"
+# ...
+
+# Persist default column visibility / grouping / filters per pane
+# [issues]
+# columns = ["ID", "State", "Title", "Labels"]
+# group_by_column = "State"
+# group_ascending = true
+# [issues.column_filters]
+# State = ["opened"]
+
+# [mrs]
+# columns = ["ID", "State", "Status", "Title", "Labels"]
+# [mrs.column_filters]
+# State = ["opened"]
+
+### Custom themes
+
+[](https://github.com/rcieri/glab-tui#custom-themes)
+
+Drop any `<name>.toml` file into `~/.config/glab-tui/themes/` and set `theme_preset = "<name>"` in `config.toml`. The file must define the same 29 color tokens as the bundled themes: the 19 semantic tokens (backgrounds, borders, text, status colors) plus the 10-entry `label_palette_0`…`label_palette_9` used for label and fallback rendering. The theme's `bg` token paints the table backgrounds, popup overlays (edit menus, selectors, confirm dialogs), and the diff view, so custom themes render consistently even on terminals whose default background differs.
+
+### Editor
+
+[](https://github.com/rcieri/glab-tui#editor)
+
+Set `$EDITOR` or `$VISUAL` to control which editor opens for description and freeform fields:
+
+export EDITOR=nvim   # or vim, nano, hx, code, etc.
+
+The default fallback is `helix` (`hx`). Inside any edit menu you can also press `Ctrl+E` to open the editor directly.
+
+---
+
+## Usage
+
+[](https://github.com/rcieri/glab-tui#usage)
+
+# Run from inside a GitLab or GitHub repository:
+cd /path/to/your/repo
+glab-tui
+
+# Specifying optional flags:
+glab-tui --repo organization/project-name
+glab-tui --dir /path/to/other/repo
+
+### Options
+
+[](https://github.com/rcieri/glab-tui#options)
+
+|Flag / Subcommand|Argument|Description|
+|---|---|---|
+|`-r`, `--repo`|`owner/repo`|Launch glab-tui for a custom remote repository|
+|`-d`, `--dir`|`/path/to/dir`|Launch glab-tui in a custom repository directory|
+|`-u`, `--update`||Check for and install updates|
+|`-h`, `--help`||Print usage help details|
+|`-V`, `--version`||Print version information|
+|`doctor`|_(subcommand)_|Check system health — backend CLI availability, config integrity, cache status|
+|`clean-cache`|`[-n, --dry-run]`|Remove stale cache entries for repos that no longer exist (preview with `--dry-run`)|
+|`cache`|_(subcommand)_|List cached data files with sizes|
+|`open`|`<entity> <id>`|Open an entity in the browser **without launching the TUI** — valid entities: `issue`, `mr`, `pr`, `pipeline`, `job`, `milestone`|
+|`repos`|_(subcommand)_|List recently-used and sibling repositories|
+
+The TUI will launch in the terminal, auto-detecting the project context and fetching the Issues tab immediately.
+
+### CLI subcommand examples
+
+[](https://github.com/rcieri/glab-tui#cli-subcommand-examples)
+
+glab-tui doctor                     # run system diagnostics
+glab-tui clean-cache --dry-run      # preview stale-cache cleanup
+glab-tui clean-cache                # actually remove stale cache entries
+glab-tui cache                      # list cached data files with sizes
+glab-tui open issue 42              # open issue #42 in your browser
+glab-tui open mr 7                  # open MR/PR #7 in your browser
+glab-tui repos                      # list recently-used repositories
+
+---
+
+## Filtering, Grouping & Columns
+
+[](https://github.com/rcieri/glab-tui#filtering-grouping--columns)
+
+Every table tab (Issues, MRs/PRs, Pipelines, Jobs, Runners, Releases, Todos, Milestones, Branches, Environments) can be tailored with column visibility, value-based filters, grouping, and sort order — all from a single **Configure View** popup.
+
+### Column configuration & value-based filtering
+
+[](https://github.com/rcieri/glab-tui#column-configuration--value-based-filtering)
+
+1. Press **`Tab`** (or **`,`**) to open the **Configure View** popup.
+2. The **COLUMNS** section lists every available column for the active tab. Use `j`/`k` (or arrows) to move through it.
+    - **`Space`** toggles whether a column is shown in the table.
+    - **`Enter`** opens a **value-based filter** for that column: a searchable multi-select of the distinct values currently loaded. For example, on the Issues tab, `Enter` on the `State` column lets you filter to just `opened` issues — or on the `Labels` column, to specific labels.
+3. Inside the filter selector: `Space` toggles values on/off, `/` or `f` fuzzy-searches the values, `Enter` applies the filter, `Esc` cancels. Selecting multiple values is supported (e.g. `opened` **and** `closed`).
+4. Applied filters are shown as a count next to the column, e.g. `[x] State (1)`. Re-open the column and uncheck values to widen or clear the filter.
+
+### Grouping & sort order
+
+[](https://github.com/rcieri/glab-tui#grouping--sort-order)
+
+- The **GROUP BY** section lets you group rows by any column: move to a column and press **`Space`** or **`Enter`** to toggle grouping. Grouped rows are visually separated by headers.
+- The **ORDER** section toggles between **Ascending** and **Descending** sort order for the current group-by column (or the default ordering when no group is set).
+
+### Page size & theme
+
+[](https://github.com/rcieri/glab-tui#page-size--theme)
+
+- **PAGE SIZE** controls how many items are fetched per tab. **`Enter`** on it puts it into edit mode.
+- **THEME** lets you switch the color theme on the fly; selections persist via **Save View** below.
+
+### Saving & persistence
+
+[](https://github.com/rcieri/glab-tui#saving--persistence)
+
+- The **Save View** button at the bottom of the popup writes the current layout — enabled columns, group-by, order, filters, and page size — to `config.toml` (repo-local `.glab-tui/config.toml` or global `~/.config/glab-tui/config.toml`).
+
+### A note on filtering
+
+[](https://github.com/rcieri/glab-tui#a-note-on-filtering)
+
+> Column filters are applied **client-side, after data is fetched** — they only ever see the rows that were loaded. If you have many closed/merged items and want more open ones in the list, raise the **PAGE SIZE** in the Configure View popup (or set `page_size` in `config.toml`) so more rows are fetched to filter across.
+
+---
+
+## Key Bindings
+
+[](https://github.com/rcieri/glab-tui#key-bindings)
+
+> All tables below show the **default** keys. The **Config** column shows the key name to remap in `config.toml` (e.g. under `[keybindings.issues]`, `create_issue = "n"`). `—` means the binding is fixed and **not** remappable.
+
+### Global
+
+[](https://github.com/rcieri/glab-tui#global)
+
+> Remappable via `[keybindings.global]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`l` / `→`|Next tab|`next_tab`|
+|`h` / `←`|Previous tab|`prev_tab`|
+|`Tab` / `,`|Open column configure popup (`Space` toggle column, `Enter` filter by column values)|`configure`|
+|`Esc`|Close configure popup / overlay|—|
+|`j` / `↓`|Move selection down|—|
+|`k` / `↑`|Move selection up|—|
+|`J`|Scroll description panel down|`scroll_down`|
+|`K`|Scroll description panel up|`scroll_up`|
+|`f` / `/`|Open search / filter bar|`search`|
+|`Enter` / `Esc` (in search)|Close search bar|—|
+|`?` / `F1`|Show help|`help`|
+|`Ctrl+P`|Global search across all loaded issues & MRs|`global_search`|
+|`Ctrl+S`|Switch repository|—|
+|`F5` / `Ctrl+R`|Refresh current tab|`refresh`|
+|`s`|Save view layout to config|`save_view`|
+|`u`|Check for updates|—|
+|`q` / `Esc`|Quit (or close current overlay)|`quit`|
+
+---
+
+### Issues tab
+
+[](https://github.com/rcieri/glab-tui#issues-tab)
+
+> Remappable via `[keybindings.issues]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`n`|Create new issue (prompts for title)|`create_issue`|
+|`e`|Open edit menu for selected issue (opens bulk edit menu when multiple are selected)|`edit_entity`|
+|`m`|Create MR/PR from selected issue|`create_mr`|
+|`c`|Close selected issue|`close_entity`|
+|`r`|Reopen selected issue|`reopen_entity`|
+|`d`|Delete selected issue (with confirmation)|`delete_entity`|
+|`o`|Open selected issue in browser|—|
+|`Space`|Select issue for bulk editing|`select_issue`|
+|`v`|Toggle select mode (yazi-style contiguous selection)|`selection_toggle`|
+|`J`|Scroll description panel down|`scroll_down`|
+|`K`|Scroll description panel up|`scroll_up`|
+
+**Issue edit menu fields**
+
+|Field|Input method|
+|---|---|
+|Title|Inline text input|
+|Labels|Searchable multi-select (fetched from GitLab/GitHub)|
+|Assignees|Searchable multi-select (fetched from project members)|
+|Milestone|Searchable single-select (fetched from project)|
+|Confidential|Single-select: Public / Confidential _(GitLab only)_|
+|Due Date|Interactive calendar date picker (`Enter` to open; `h`/`l` month, `j`/`k` day) _(GitLab only)_|
+|Weight|Inline text input (integer) _(GitLab only)_|
+|Description|Opens `$EDITOR` (or press `Ctrl+E`)|
+
+---
+
+### Merge Requests tab
+
+[](https://github.com/rcieri/glab-tui#merge-requests-tab)
+
+> Remappable via `[keybindings.mrs]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`n`|Create MR from issue ID (prompts for issue IID)|`create_mr`|
+|`e`|Open edit menu for selected MR (opens bulk edit menu when multiple are selected)|`edit_entity`|
+|`a`|Approve selected MR|`approve_mr`|
+|`A`|Revoke your approval _(GitLab only)_|`revoke_mr`|
+|`R`|Rebase source branch onto target|`rebase_mr`|
+|`m`|Merge selected MR (squash + remove source branch)|`merge_mr`|
+|`D`|View diff of selected MR in terminal|`view_diff`|
+|`P`|View related pipelines from MR detail|`view_related_pipelines`|
+|`Space`|Select MR for bulk editing|`select_mr`|
+|`v`|Toggle select mode (yazi-style contiguous selection)|`selection_toggle`|
+|`o`|Open selected MR in browser|—|
+|`s`|Toggle Draft / Ready status|`toggle_draft`|
+|`c`|Close selected MR|`close_entity`|
+|`r`|Reopen selected MR|`reopen_entity`|
+|`d`|Delete selected MR (with confirmation)|`delete_entity`|
+|`J`|Scroll description panel down|`scroll_down`|
+|`K`|Scroll description panel up|`scroll_up`|
+
+**MR edit menu fields**
+
+|Field|Input method|
+|---|---|
+|Title|Inline text input|
+|Labels|Searchable multi-select|
+|Assignees|Searchable multi-select|
+|Reviewers|Searchable multi-select|
+|Milestone|Searchable single-select|
+|Target Branch|Inline text input|
+|Status (Draft/Ready)|Single-select|
+|Description|Opens `$EDITOR` (or press `Ctrl+E`)|
+
+---
+
+### Diff View
+
+[](https://github.com/rcieri/glab-tui#diff-view)
+
+Press `D` on an MR/PR to open its diff. Use `Tab` to move focus between the **file tree** and the **diff pane**.
+
+> Diff View keys are **fixed** and not remappable in `config.toml`.
+
+|Key|Action|
+|---|---|
+|`q` / `Esc`|Exit diff view (or cancel current selection / search)|
+|`Tab`|Toggle focus between file tree and diff pane|
+|`h` / `←`|In file tree: collapse directory; in diff: focus file tree|
+|`l` / `→`|In file tree: expand directory / open file|
+|`j` / `↓`|Move down (file tree or diff lines)|
+|`k` / `↑`|Move up (file tree or diff lines)|
+|`J` / `K`|Scroll 10 lines / jump 10 files|
+|`Enter` / `Space`|In file tree: open file; in diff: toggle zoom (hide/show file tree)|
+|`[` / `]`|Previous / next hunk|
+|`z` / `Z`|Collapse / expand all files|
+|`m`|Mark / unmark file as reviewed (on a directory: every file below it)|
+|`M`|Hide / show reviewed files in the file tree|
+|`d`|Toggle unified / side-by-side layout|
+|`v` / `V`|Start / stop multi-line selection for comments|
+|`c`|Add comment on current line / selection|
+|`C`|Add comment via external `$EDITOR`|
+|`e`|Add code suggestion via `$EDITOR`|
+|`a`|Open comment actions menu (reply, resolve, edit, delete)|
+|`r`|Submit review (Approve / Request Changes / Comment)|
+|`/` / `f`|Search within diff|
+|`Ctrl+N`|Next search match|
+|`Ctrl+Shift+N`|Previous search match|
+|`?` / `F1`|Show help|
+
+**Marking files as reviewed.** On a large MR, press `m` to tick off a file you are done with — from the file tree, or from the diff pane, where it marks the file you are currently reading. Reviewed files get a check indicator and fade to muted; a directory fades **and folds itself** once every file below it is reviewed — cascading up through parents, so a finished branch collapses to a single line — and the tree header shows your progress (`12/200`). Unmarking reopens the directory, and a completed directory you reopen by hand stays open. Press `M` to hide reviewed files altogether and leave only the pending ones. Marks are stored per MR/PR in `~/.cache/glab-tui/<repo>.json` and restored the next time you open the same diff (files that are no longer part of the diff are dropped). They are local to `glab-tui` — GitLab's own "viewed" checkboxes are not synced.
+
+---
+
+### Pipelines tab
+
+[](https://github.com/rcieri/glab-tui#pipelines-tab)
+
+> Remappable via `[keybindings.pipelines]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`Enter`|Drill into selected pipeline (show its jobs)|—|
+|`Esc` / `Backspace`|Go back (jobs → pipelines, trace → jobs)|—|
+|`n`|Create / run a pipeline with an interactive form (branch/ref, workflow inputs, variables)|—|
+|`p`|Trigger a new pipeline from the current branch (`glab ci run --mr`)|`trigger_pipeline`|
+|`r`|Retry selected pipeline (or all checked pipelines)|`retry`|
+|`d`|Cancel selected pipeline|`cancel`|
+|`o`|Open pipeline in browser|—|
+|`Space`|Check/uncheck pipeline for bulk retry|—|
+|`j` / `↓`|(in job view) move down|—|
+|`k` / `↑`|(in job view) move up|—|
+
+**Inside a pipeline (job view)**
+
+> Remappable via `[keybindings.jobs]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`Enter`|Fetch and display job trace (toggle zoom when trace is open)|`view_trace`|
+|`r`|Retry selected job (or all checked jobs)|`retry`|
+|`S`|Start manual (blocked) GitLab CI job|`start_job`|
+|`c`|Cancel selected job (or all checked jobs)|`cancel`|
+|`d`|Download job artifact|`download_artifact`|
+|`o`|Open job in browser|`open_in_browser`|
+|`e`|Open job trace in `$EDITOR`|`view_trace_editor`|
+|`p`|Switch to pipeline selector|`enter_pipeline`|
+|`s`|Select all jobs in the current stage|`select_stage`|
+|`w`|Toggle trace word wrap|`toggle_trace_wrap`|
+|`m`|Collapse / expand matrix jobs|—|
+|`Space`|Check/uncheck job for bulk retry/cancel|`select_job`|
+|`Esc` / `Backspace`|Go back (trace → jobs → pipelines)|—|
+|`j` / `↓`|(in trace view) scroll down|—|
+|`k` / `↑`|(in trace view) scroll up|—|
+
+---
+
+### Runners tab
+
+[](https://github.com/rcieri/glab-tui#runners-tab)
+
+> Remappable via `[keybindings.runners]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`p`|Pause selected runner|`pause`|
+|`r`|Resume (un-pause) selected runner|`resume`|
+|`e`|Edit runner description (inline text input)|`edit_description`|
+
+---
+
+### Releases tab
+
+[](https://github.com/rcieri/glab-tui#releases-tab)
+
+> Remappable via `[keybindings.releases]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`Enter`|View release details in terminal|—|
+|`n`|Create a new release (tag, name, description)|`create_release`|
+|`e`|Edit selected release|`edit_release`|
+|`d`|Delete selected release (with confirmation)|`delete_release`|
+|`o`|Open release in browser|`open_in_browser`|
+
+---
+
+### Milestones tab
+
+[](https://github.com/rcieri/glab-tui#milestones-tab)
+
+> Remappable via `[keybindings.milestones]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`n`|Create new milestone (title, description, start & due date)|`create_milestone`|
+|`e`|Edit selected milestone|`edit_milestone`|
+|`c`|Close selected milestone|`close_milestone`|
+|`r`|Reopen selected milestone|`reopen_milestone`|
+|`d`|Delete selected milestone (with confirmation)|`delete_milestone`|
+|`o`|Open milestone in browser|`open_in_browser`|
+
+---
+
+### Todos tab
+
+[](https://github.com/rcieri/glab-tui#todos-tab)
+
+On GitLab this tab shows **Todos**; on GitHub it shows **Notifications**.
+
+> Remappable via `[keybindings.todos]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`Enter`|Mark item as read and jump to its target (issue / MR)|`mark_as_read`|
+|`o`|Open item in browser|`open_in_browser`|
+
+---
+
+### Branches tab
+
+[](https://github.com/rcieri/glab-tui#branches-tab)
+
+> Remappable via `[keybindings.branches]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`n`|Create a new branch (prompts for name; based on the selected branch)|`create_branch`|
+|`d`|Delete selected branch (with confirmation)|`delete_branch`|
+
+---
+
+### Environments tab
+
+[](https://github.com/rcieri/glab-tui#environments-tab)
+
+> Remappable via `[keybindings.environments]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`Enter`|Fetch and view the deployments list for the selected environment|`view_deployments`|
+
+---
+
+### Terminal tab
+
+[](https://github.com/rcieri/glab-tui#terminal-tab)
+
+Logs every `glab` / `gh` command the TUI executes, with success/failure status.
+
+> Remappable via `[keybindings.terminal]` in `config.toml`.
+
+|Key|Action|Config|
+|---|---|---|
+|`j` / `↓`|Scroll log down|—|
+|`k` / `↑`|Scroll log up|—|
+|`w`|Toggle line wrapping|`toggle_wrap`|
+
+---
+
+### Selector overlays (labels, assignees, etc.)
+
+[](https://github.com/rcieri/glab-tui#selector-overlays-labels-assignees-etc)
+
+Searchable multi-select popups are used for choosing labels, assignees, reviewers, milestones, and for **value-based column filtering** (see [Filtering, Grouping & Columns](https://github.com/rcieri/glab-tui#filtering-grouping--columns)).
+
+> Selector keys are **fixed** and not remappable in `config.toml`.
+
+|Key|Action|
+|---|---|
+|`j` / `↓`|Move down|
+|`k` / `↑`|Move up|
+|`Space`|Toggle selection|
+|`f` / `/` / `i`|Enter filter/search mode|
+|`Backspace`|Delete last character in filter|
+|`Enter`|Confirm selection and apply|
+|`Esc`|Cancel and return to edit menu|
+
+> If you type a value that doesn't exist in the list, a **`+ Create "…"`** option appears at the top, letting you create a new label inline.
+
+---
+
+## Dependencies
+
+[](https://github.com/rcieri/glab-tui#dependencies)
+
+|Crate|Version|Purpose|
+|---|---|---|
+|[`ratatui`](https://crates.io/crates/ratatui)|0.30.2|TUI rendering framework|
+|[`crossterm`](https://crates.io/crates/crossterm)|0.29.0|Cross-platform terminal I/O and event streaming|
+|[`tokio`](https://crates.io/crates/tokio)|1.53 (full)|Async runtime for concurrent data fetching|
+|[`serde`](https://crates.io/crates/serde)|1.0 (derive)|Serialization / deserialization|
+|[`serde_json`](https://crates.io/crates/serde_json)|1.0|Parsing JSON responses from `glab api`|
+|[`toml`](https://crates.io/crates/toml)|1.1|Parsing `config.toml` and theme files|
+|[`anyhow`](https://crates.io/crates/anyhow)|1.0|Ergonomic error handling|
+|[`async-trait`](https://crates.io/crates/async-trait)|0.1.92|Async trait support for Backend trait|
+|[`clap`](https://crates.io/crates/clap)|4 (derive)|CLI argument parsing for subcommands|
+|[`serde_yaml`](https://crates.io/crates/serde_yaml)|0.9|YAML output for `doctor` diagnostics|
+|[`chrono`](https://crates.io/crates/chrono)|0.4|Timestamp formatting ("2 hours ago")|
+|[`tempfile`](https://crates.io/crates/tempfile)|3.10|Temporary files for editor integration|
+|[`fuzzy-matcher`](https://crates.io/crates/fuzzy-matcher)|0.3|Fuzzy search/filter across table columns|
+|[`syntect`](https://crates.io/crates/syntect)|5|Syntax highlighting in diff and preview panes|
+|[`pulldown-cmark`](https://crates.io/crates/pulldown-cmark)|0.13.0|CommonMark and GFM markdown renderer for details panes|
+
+All API calls are made by shelling out to `gh api` or `glab api` (depending on the repository host; you only need the CLI matching the service you use) — no personal access token or direct HTTP client is required inside the binary.
+
+---
+
+## Project Structure
+
+[](https://github.com/rcieri/glab-tui#project-structure)
+
+```
+src/
+├── main.rs          # Entry point, event loop, all key-binding handlers
+├── app.rs           # App state, Tab enum, DiffView, DatePicker, filtering logic
+├── config.rs        # Config/Theme loading, keybinding structs, TOML generation
+├── event.rs         # Async event handler (keyboard, tick, async data events)
+├── fetch.rs         # Per-tab data-fetching dispatch
+├── git_helpers.rs   # Git remote parsing, current branch, workflow file detection
+├── editor.rs        # External editor integration ($EDITOR)
+├── entity_editor.rs # Edit-menu field change logic
+├── templates.rs     # Default issue/MR/PR description templates
+├── cli.rs           # CLI subcommands (doctor, clean-cache, cache, open, repos)
+├── themes/          # Bundled theme TOML files
+├── backend/         # CLI backend layer
+│   ├── mod.rs       # Backend trait (~40 methods)
+│   ├── glab.rs      # GlabBackend — shells out to glab CLI
+│   └── gh.rs        # GhBackend — shells out to gh CLI
+├── domain/          # Domain models + API logic
+│   ├── mod.rs       # Module declarations
+│   ├── client.rs    # GitlabClient wrapper (backend + page_size + event tx)
+│   ├── issues.rs    # Issue struct + list/get/create/edit
+│   ├── mr.rs        # MergeRequest/PR, DiscussionNote, NotePosition
+│   ├── pipelines.rs # Pipeline + Job types, dedup, retry logic, unit tests
+│   ├── runners.rs   # Runner type + list/edit logic
+│   ├── releases.rs  # Release type + list/create/edit
+│   ├── milestones.rs# Milestone type + list/edit
+│   ├── notifications.rs # Todo/notification type + list
+│   ├── branches.rs  # Branch type + list/create/delete
+│   └── deployments.rs # Environment + Deployment types
+├── handlers/        # Keypress handlers
+│   ├── mod.rs
+│   ├── tabs.rs      # Per-tab keybinding handlers
+│   └── overlays.rs  # Overlay keybinding handlers
+├── ui/              # Ratatui render functions
+│   ├── mod.rs       # Re-exports
+│   ├── inspector.rs # Unified entity inspector (preview/edit single-column layout)
+│   ├── tabs.rs      # Tab-specific render functions
+│   ├── overlays.rs  # Overlay render functions (SubmitDialog, selectors, date picker)
+│   ├── helpers.rs   # Shared UI helpers (badge styling, fuzzy cells)
+│   ├── diff.rs      # Diff view render functions
+│   └── modal.rs     # Unified modal component
+└── utils/
+    ├── mod.rs
+    ├── cache.rs     # Offline caching
+    ├── format.rs    # Time formatting, tab expansion, text wrapping
+    ├── markdown.rs  # CommonMark and GFM Markdown rendering
+    ├── ui.rs        # StatefulTable generic helper
+    └── update.rs    # GitHub releases self-updater with multi-target Linux selection
+```
+
+---
+
+## Running Tests
+
+[](https://github.com/rcieri/glab-tui#running-tests)
+
+Unit tests live in several modules:
+
+- [`src/domain/pipelines.rs`](https://github.com/rcieri/glab-tui/blob/main/src/domain/pipelines.rs) — pipeline job deduplication and stage-ordering logic.
+- [`src/domain/mr.rs`](https://github.com/rcieri/glab-tui/blob/main/src/domain/mr.rs) — discussion note and review comment logic.
+- [`src/app.rs`](https://github.com/rcieri/glab-tui/blob/main/src/app.rs) — selector fuzzy-matching and filter logic.
+
+---
+
+## Releasing
+
+[](https://github.com/rcieri/glab-tui#releasing)
+
+Releases are prepared and distributed from a maintainer's machine; CI only builds the cross-platform release binaries.
+
+scripts/release.sh [patch|minor|major|nightly]   # default: patch
+
+`scripts/release.sh` walks the whole release in one pass: it bumps the crate version, regenerates `CHANGELOG.md`/`AGENTS.md`/`README.md` and the demo GIFs via a headless `opencode run`, opens a `chore: prepare release vX.Y.Z` PR, pauses for you to review it, squash-merges it, tags and pushes the version, waits for the CI release build, then writes the release notes and pushes the Homebrew formula, Scoop manifest, Docker image, and crate.
+
+Prerequisites: `gh` (authenticated), `opencode`, `cargo` (`docker` for the final publish step), `jq`, and `vhs`/`ttyd`/`ffmpeg`/JetBrainsMono Nerd Font for the demo recordings. The script fails fast with a clear message when a prerequisite is missing.
+
+---
+
+## Contributing
+
+[](https://github.com/rcieri/glab-tui#contributing)
+
+1. Fork the repo and create a feature branch.
+2. Keep commits atomic and follow [Conventional Commits](https://www.conventionalcommits.org/).
+3. Run `cargo fmt` and `cargo clippy -- -D warnings` before opening a PR.
+4. Add or update tests where relevant.
+
+---
+
+## License
+
+[](https://github.com/rcieri/glab-tui#license)
+
+[`MIT`](https://github.com/rcieri/glab-tui/blob/main/LICENSE.md)

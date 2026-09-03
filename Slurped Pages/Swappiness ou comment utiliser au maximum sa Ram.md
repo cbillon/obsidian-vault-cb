@@ -30,6 +30,9 @@ Du coup il faut éditer le fichier suivant `/etc/sysctl.conf en root et ajouter 
 
 ```
 vm.swappiness = 10
+
+puis 
+sudo systcl -p
 ```
 
 Lancer ces commandes en ROOT qui vont désactiver la SWAP pour la relancer avec les nouveaux réglages.

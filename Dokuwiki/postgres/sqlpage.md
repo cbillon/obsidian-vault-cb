@@ -8,6 +8,6 @@ tags:
 ====== SQL Page ======
 
 
-[[https://sql.ophir.dev/|SQL Page|Site officiel]]
+[sql page](https://sql-page.com)
 
 [[https://linuxfr.org/news/ecrire-une-appli-web-en-une-journee-avec-sqlpage]]

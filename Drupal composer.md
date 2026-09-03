@@ -141,3 +141,7 @@ If you place a `drupal/core` version requirement in your `composer.json` fil
 ## [Using Composer with Drupal](https://www.drupal.org/docs/develop/using-composer/using-composer-with-drupal)
 
 Composer can be used to add dependencies to a Drupal project. It can be used in the following ways.
+
+## Composer/installers
+
+The [composer/installers](https://github.com/composer/installers) plugin is similar to this plugin in that it allows dependencies to be installed in locations other than the `vendor` directory. However, Composer and the `composer/installers` plugin have a limitation that one project cannot be moved inside of another project. Therefore, if you use `composer/installers` to place Drupal modules inside the directory `web/modules/contrib`, then you cannot also use `composer/installers` to place files such as `index.php` and `robots.txt` into the `web` directory. The drupal-scaffold plugin was created to work around this limitation.

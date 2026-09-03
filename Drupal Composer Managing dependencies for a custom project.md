@@ -61,3 +61,7 @@ After you save the composer.json file, run `composer update` from the same dir
 Your dependencies will be added to the root /vendor directory and will be detected by the autoloader as expected.
 
 Be sure to also run `drush cache-rebuild` or otherwise clear caches for the best results.
+
+## Composer/installers
+
+The [composer/installers](https://github.com/composer/installers) plugin is similar to this plugin in that it allows dependencies to be installed in locations other than the `vendor` directory. However, Composer and the `composer/installers` plugin have a limitation that one project cannot be moved inside of another project. Therefore, if you use `composer/installers` to place Drupal modules inside the directory `web/modules/contrib`, then you cannot also use `composer/installers` to place files such as `index.php` and `robots.txt` into the `web` directory. The drupal-scaffold plugin was created to work around this limitation.

@@ -7,7 +7,7 @@ tags:
 
 Version X.Y.Z
 - We will still release every 6 months, in April and October
-- 
+ 
 The changes are:
 
 - The first part of the version will now represent a Series
@@ -75,8 +75,6 @@ To bring that to an end I try to summarize the outcome:
 - As a result the developers of each plug-in is free to follow whatever Git workflow convenient for them. Means, there are a multitude of workflows. 
 
 Curiously, almost all plug-ins have a GitHub link published on its plug-in database, although there is no common understanding what that GitHub repo really is.
-
-  
 
 So the net result is, the system administrators (OS level, mainly Unix shell) have to either run a different set of Git commands for each plug-in or give up Git entirely and fall back to the zip archives - which is a step backward compared to the forward step Moodle made over a decade ago to [move from Zip files to Git](https://docs.moodle.org/20/en/Git_for_Administrators#Obtaining_the_code_from_Git).
 

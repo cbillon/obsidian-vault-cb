@@ -174,16 +174,16 @@ This YAML-driven approach delivers immediate practical benefits:
 
 The differences between configuration as code and click-and-deploy become apparent in day-to-day development scenarios:
 
-|Aspect|Click-and-Deploy|Configuration as Code|
-|---|---|---|
-|**Initial Setup**|5 minutes of clicking through wizards|30 minutes writing YAML configuration **(only the first time)**|
-|**Adding New Service**|10 clicks across multiple screens, changes undocumented|5 lines of YAML in pull request with peer review|
-|**Environment Replication**|Manual recreation, often with subtle differences|`git clone` followed by automated deployment|
-|**Team Onboarding**|Screen sharing session or outdated documentation|Read the configuration files in the repository|
-|**Rollback Speed**|Manual reconfiguration through dashboards|`git revert` followed by automated redeployment|
-|**Audit Trail**|Platform logs (if comprehensive)|Complete Git history with commit messages|
-|**Change Approval**|Tribal knowledge and Slack messages|Formal pull request review process|
-|**Configuration Drift**|Inevitable as team makes undocumented changes|Impossible-all changes are versioned|
+| Aspect                      | Click-and-Deploy                                        | Configuration as Code                                           |
+| --------------------------- | ------------------------------------------------------- | --------------------------------------------------------------- |
+| **Initial Setup**           | 5 minutes of clicking through wizards                   | 30 minutes writing YAML configuration **(only the first time)** |
+| **Adding New Service**      | 10 clicks across multiple screens, changes undocumented | 5 lines of YAML in pull request with peer review                |
+| **Environment Replication** | Manual recreation, often with subtle differences        | `git clone` followed by automated deployment                    |
+| **Team Onboarding**         | Screen sharing session or outdated documentation        | Read the configuration files in the repository                  |
+| **Rollback Speed**          | Manual reconfiguration through dashboards               | `git revert` followed by automated redeployment                 |
+| **Audit Trail**             | Platform logs (if comprehensive)                        | Complete Git history with commit messages                       |
+| **Change Approval**         | Tribal knowledge and Slack messages                     | Formal pull request review process                              |
+| **Configuration Drift**     | Inevitable as team makes undocumented changes           | Impossible-all changes are versioned                            |
 
 ### Enterprise Scenarios Where Configuration as Code Wins[](#enterprise-scenarios-where-configuration-as-code-wins)
 

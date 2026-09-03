@@ -1,0 +1,91 @@
+---
+link: https://github.com/srobotta/moodle-tools/blob/master/README.md
+site: GitHub
+excerpt: Custom toolset to support Moodle development . Contribute to srobotta/moodle-tools development by creating an account on GitHub.
+twitter: https://twitter.com/@github
+slurped: 2026-09-02T18:41
+title: moodle-tools/README.md at master · srobotta/moodle-tools
+tags:
+  - moodle
+  - tools
+---
+
+Everything inside here should help me in the Moodle development and make tidy tasks easier to handle.
+
+Each of these scripts has a --help switch. Use this or look into the source code to get more specific information about any of these tools.
+
+All material distributed in this repository is published under the GPLv3 license.
+
+## backup-moodle-data.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#backup-moodle-datash)
+
+Script to backup the moodle data directory from inside the docker container to an arbitrary directory on the host system. Also, with the option -r and a backup directory on the host system, this content will be put into the moodle data directory of the container.
+
+## brstatus.php
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#brstatusphp)
+
+This script fetches Moodle tracker information based on the existing branches that are existing in your working directory. It runs over all branches, from the branch name the affected ticket number is derived and with this number information from the Moodle Tracker are fetched. The result is a list with branch names and the corresponding ticket information.
+
+## dbdump.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#dbdumpsh)
+
+Assuming that you use the [Moodle-Docker](https://github.com/moodlehq/moodle-docker) setup to develop for Moodle, this script makes a dump and a restore of the database. I find it useful to dump the data before doing an upgrade or before installing a plugin, so that with the restore process I can eassily switch back to an older version. Also for testing upgrade processes of a plugin where data is changed, this lets you easily repeat the process during the test phase in the development.
+
+## create_patch.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#create_patchsh)
+
+Helps me to create a patch when I am working on a ticket and I need to apply the same changes to backport branches for releases that need these changes too. Based on the branch name, the script looks up the last two commits, that should be the latest from the Moodle team and the last one containing the changes to resolve the ticket. The diff is written into a patch file that can be used with git apply.
+
+## download-questions-from-quiz.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#download-questions-from-quizsh)
+
+Script that downloads the questions of a quiz in the Moodle XML format. The script needs the credentials of your Moodle login and the Moodle domain. It then uses curl and other shell tools to login to Moodle, call the quiz page, from there extract the question ids and call the export xml on each question. The result is combined into a single xml file.
+
+## export-qbank.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#export-qbanksh)
+
+Exports all questions and the category hierachy from a question bank. It basically uses the export function of Moodle to get the xml with the questions. The input parameter is the question bank id. The script works very similar to the `download-questions-from-quiz.sh`. The script was developed for the new questionbank feature from >4.6. It might work with lower versions for Moodle as well.
+
+## moodle-rsync.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#moodle-rsyncsh)
+
+I use this script to synchronize my plugin development from a separate folder where the repo is checked out, with my moodle installation where I actually do the development and test my changes.
+
+## release-plugin.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#release-pluginsh)
+
+This script can be used to create releases automatically on moodle.org and github.com using the APIs of these sites. You must have personal access tokens before the releases can be published.
+
+## update_branches.sh
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#update_branchessh)
+
+Runs over all existing branches and does a rebase to the latest upstream version (derived from the branch name). This can be used to updates all branches once a weekly release is published. If the rebase fails because of a merge conflict, the script stops and the issue must be resolved manually. Running this on an up-to-date branch doesn't do any harm.
+
+## Notes
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#notes)
+
+While I have the repo at a certain place, I use some of these scripts via the `bin` directory in my user account, which is included in the `PATH` variable. Inside this directory I either have a symbolic link to the version in the checked out repository directory or I use a wrapper script and set some variables for a certain configuration.
+
+```
+#!/bin/bash
+export SOME_SETTING=foobar
+~/workspace/moodle-tools/somescript.sh -optionalvar $@
+```
+
+## Howtos
+
+[](https://github.com/srobotta/moodle-tools/blob/master/README.md#howtos)
+
+- [Behat Cheat Sheet](https://github.com/srobotta/moodle-tools/blob/master/behat.md)
+- [Teacher with 150 courses in Moodle](https://github.com/srobotta/moodle-tools/blob/master/teacher-with-150-courses.md)
+- [Analyse moodle data dir usage](https://github.com/srobotta/moodle-tools/blob/master/moodle-data-usage/README.md)

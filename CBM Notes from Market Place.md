@@ -5,7 +5,7 @@ tags:
 
 [MarketPlace official documentation](https://moodle.atlassian.net/wiki/external/YTI4MmY4MWU2MDQyNDk5MTllZWY4YTBiNjA5ZDRjNWY)
 
-**"In God we trust, all others must bring data"** W. Edwards Deming is ==a popular business and scientific maxim emphasizing that personal opinions and gut feelings must be backed by empirical evidence==.
+
 # Moodle Marketplace launch and transition
 
 [What’s new](https://moodle.atlassian.net/wiki/external/ZWUxZGJlMzQ4NWRmNDI3YzhjMGFiMTA2OTdiYWMxNDQ "https://moodle.atlassian.net/wiki/external/ZWUxZGJlMzQ4NWRmNDI3YzhjMGFiMTA2OTdiYWMxNDQ")
