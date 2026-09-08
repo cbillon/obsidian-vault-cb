@@ -20,7 +20,7 @@ The Twlve-Factor App is considered a methodology. It is also called the 12-facto
 
 This methodology is a blueprint for building portable, robust, and scalable SaaS applications. Using the approach, businesses can build apps that offer a positive user experience.
 
-It came around 2011 from the developers at Heroko, a platform as a service (PaaS) company, which realized that they were seeing web applications being developed again and again with the same fundamental flaws.
+It came around 2011 from the developers at Heroku, a platform as a service (PaaS) company, which realized that they were seeing web applications being developed again and again with the same fundamental flaws.
 
 The created methodology to resolve this systematic problem should result in a build process that: [1](https://penchev.com/posts/twelve-factor-app-in-2023/#fn:source-12-factor)
 
