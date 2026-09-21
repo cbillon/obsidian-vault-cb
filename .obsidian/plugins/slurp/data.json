@@ -104,5 +104,10 @@
     "logPath": "_slurplogs",
     "debug": false
   },
-  "frontmatterOnly": false
+  "frontmatterOnly": false,
+  "images": {
+    "saveLocally": false,
+    "folder": "_files",
+    "setBanner": false
+  }
 }
