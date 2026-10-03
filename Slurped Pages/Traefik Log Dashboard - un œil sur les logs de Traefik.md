@@ -69,7 +69,7 @@ L'architecture est simple : Traefik écrit ses logs d'accès dans un fichier `**
 
 ## Configuration des logs d'accès dans Traefik
 
-Par défaut, Traefik n'écrit pas toujours les logs d'accès, ou il le fait dans un format moins adapté au parsing. L'idéal, comme je l'avais expliqué dans le [tutoriel Traefik x CrowdSec](https://www.it-connect.fr/reverse-proxy-traefik-integration-de-crowdsec-pour-bloquer-les-attaques/ "Reverse Proxy Traefik : intégration de CrowdSec pour bloquer les attaques"), c'est de configurer Traefik pour qu'il exporte les logs au format **JSON**. Ce qui suit est facultatif si vous avez déjà configuré les logs sur votre reverse proxy Traefik.
+Par défaut, Traefik n'écrit pas toujours les logs d'accès, ou il le fait dans un format moins adapté au parsing. L'idéal, comme je l'avais expliqué dans le [tutoriel Traefik x CrowdSec](https://www.it-connect.fr/reverse-proxy-traefik-integration-de-crowdsec-pour-bloquer-les-attaques/ "Reverse Proxy Traefik : intégration de CrowdSec pour bloquer les attaques"), c'est deconfigurer Traefik pour qu'il exporte les logs au format **JSON**. Ce qui suit est facultatif si vous avez déjà configuré les logs sur votre reverse proxy Traefik.
 
 Ainsi, le fichier de configuration `**traefik.yml**` doit être édité pour configurer la section **`accessLog`**. La documentation de Traefik Log Dashboard suggère la configuration suivante :
 

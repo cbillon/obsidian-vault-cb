@@ -5,22 +5,28 @@ tags:
   - configuration
 ---
 ## Pre requis
+
+se connecter à ovh.com : bc1678707-ovh  qoznof-xesu6-kutZuc
+
 On doit avoir déjà paramétrer le zones du domaine **cbillon.ovh**
 
 - créer une zone *\*.cbillon.ovh**
-
+dans la zone dns
+ l'adresse de la freebox dans le navigateur whatismyip.com : 90.92.38.140
+. indiquer l'adresse de la freebox pour cbillon.ovh, et *.cbillon.ovh
 ## Paramétrage
 
 Se connecter à la Livebox
 - 192.168.1.1   admin Se$ame!1
 
 dans l'onglet Réseau
-- personnaliser TTL : 60 pour un rafraîchissement automatique dyndns
-- cible: indiquer adresse actuelle de la frebox : 109.222.121.67
 - DHCP
 -Attribuer une adresse IP fixe à l'équipement
 - Onglet DNS
 Attribuer un nom au serveur asus 192.168.1.102
+
+Pas nécessaire : on remettra nuellement l'adresse ip de la livebox si elle a changé
+
 - DynDNS 
 - parametrer le mise à jour automatique 
 -   OVH-dyndns cbillon.ovh bc1678707-ovh qoznof-xesxu6-kutZuc
