@@ -53,13 +53,13 @@ Each TODO item is an entry in the JSON array, but in DuckDB, we'd like a table w
 SELECT * FROM 'todos.json' LIMIT 5;
 ```
 
-|userId|id|title|completed|
-|---|---|---|---|
-|1|1|delectus aut autem|false|
-|1|2|quis ut nam facilis et officia qui|false|
-|1|3|fugiat veniam minus|false|
-|1|4|et porro tempora|true|
-|1|5|laboriosam mollitia et enim quasi adipisci quia provident illum|false|
+| userId | id  | title                                                           | completed |
+| ------ | --- | --------------------------------------------------------------- | --------- |
+| 1      | 1   | delectus aut autem                                              | false     |
+| 1      | 2   | quis ut nam facilis et officia qui                              | false     |
+| 1      | 3   | fugiat veniam minus                                             | false     |
+| 1      | 4   | et porro tempora                                                | true      |
+| 1      | 5   | laboriosam mollitia et enim quasi adipisci quia provident illum | false     |
 
 Finding out which user completed the most TODO items is as simple as:
 
@@ -71,9 +71,9 @@ ORDER BY total_completed DESC
 LIMIT 1;
 ```
 
-|userId|total_completed|
-|---|---|
-|5|12|
+| userId | total_completed |
+| ------ | --------------- |
+| 5      | 12              |
 
 Under the hood, DuckDB recognizes the `.json` file extension in `'todos.json'`, and calls `read_json('todos.json')` instead. This function is similar to our `read_csv` function, which [automatically infers column names and types for CSV files](https://duckdb.org/docs/data/csv/auto_detection.html).
 

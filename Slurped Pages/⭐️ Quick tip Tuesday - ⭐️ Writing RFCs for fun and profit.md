@@ -3,20 +3,10 @@ link: https://dev.to/wesen/quick-tip-tuesday-writing-rfcs-for-fun-and-profit-3bo
 byline: Manuel Odendahl
 site: DEV Community
 date: 2022-04-26T14:22
-excerpt: I suck at writing documentation. I suck at writing emails. I suck at
-  writing project specifications....
+excerpt: I suck at writing documentation. I suck at writing emails. I suck at writing project specifications....
 twitter: https://twitter.com/@mnmlmnl
 tags:
-  - slurp/programming
-  - slurp/architecture
-  - slurp/agile
-  - slurp/productivity
-  - slurp/software
-  - slurp/coding
-  - slurp/development
-  - slurp/engineering
-  - slurp/inclusive
-  - slurp/community
+  - architecture
 slurped: 2026-10-12T09:40
 title: "⭐️ Quick tip Tuesday: ⭐️ Writing RFCs for fun and profit"
 ---

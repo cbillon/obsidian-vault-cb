@@ -1,9 +1,12 @@
 ---
 link: https://moodledev.io/docs/5.3/guides/composer
-excerpt: How to make your Moodle plugin available via Composer, and developer
-  tips for working with Composer-based Moodle sites.
+excerpt: How to make your Moodle plugin available via Composer, and developer tips for working with Composer-based Moodle sites.
 slurped: 2026-08-23T14:30
 title: Composer support for plugins | Moodle Developer Resources
+tags:
+  - moodle
+  - composer
+  - install
 ---
 
 Moodle 5.2 introduced native support for distributing and installing Moodle plugins using [Composer](https://getcomposer.org/), the PHP package manager. Plugin developers can publish their plugins to [Packagist](https://packagist.org/) and site administrators can install them with a simple `composer require` command.

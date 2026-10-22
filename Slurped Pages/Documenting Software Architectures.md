@@ -7,7 +7,7 @@ excerpt: The Architects Choice
 slurped: 2025-02-08T09:27
 title: Documenting Software Architectures
 ---
-
+g
 In this newsletter, we will try to understand:
 
 - **Why software architecture documentation is necessary**

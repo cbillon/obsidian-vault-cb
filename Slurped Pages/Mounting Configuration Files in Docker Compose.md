@@ -185,15 +185,15 @@ I have tripped over each of these at least once while helping customers move to 
 
 ## Configuration File Approach Comparison
 
-|Feature|Bind Mount|Custom Image|Compose `configs` Inline|`configs` + `secrets`|
-|---|---|---|---|---|
-|Single-file deployment|No|Yes (image + Compose)|Yes|Yes (with Distr Secrets)|
-|Distr support|No (multi-file)|Yes|Yes|Yes (with Distr Secrets)|
-|Editable by operator|Yes (host file)|No (rebuild required)|Yes (edit Compose file)|Yes|
-|Safe for sensitive values|No|No|No|Yes|
-|Supports variable defaults|No|No|Yes (Compose interpolation)|Yes|
-|Minimum Compose version|Any|Any|2.23.1|2.23.1|
-|Best for|Local dev, git checkout|Custom extensions or binaries|Shipped Compose artifacts|Shipped Compose + credentials|
+| Feature                    | Bind Mount              | Custom Image                  | Compose `configs` Inline    | `configs` + `secrets`         |
+| -------------------------- | ----------------------- | ----------------------------- | --------------------------- | ----------------------------- |
+| Single-file deployment     | No                      | Yes (image + Compose)         | Yes                         | Yes (with Distr Secrets)      |
+| Distr support              | No (multi-file)         | Yes                           | Yes                         | Yes (with Distr Secrets)      |
+| Editable by operator       | Yes (host file)         | No (rebuild required)         | Yes (edit Compose file)     | Yes                           |
+| Safe for sensitive values  | No                      | No                            | No                          | Yes                           |
+| Supports variable defaults | No                      | No                            | Yes (Compose interpolation) | Yes                           |
+| Minimum Compose version    | Any                     | Any                           | 2.23.1                      | 2.23.1                        |
+| Best for                   | Local dev, git checkout | Custom extensions or binaries | Shipped Compose artifacts   | Shipped Compose + credentials |
 
 Distr ships a single Compose file to the agent in the customer’s environment. Approaches that require the operator to place extra files on the host outside of that Compose file (host bind mounts, Compose-native `secrets:` sourced from `./postgres_password.txt`) add management complexity for both the vendor and the customer, because there is no single artifact to version, sign, and roll out.
 

@@ -168,3 +168,6 @@ volumes:
 - ./vendor:/var/www/html/vendor
 command: >
 sh -c "composer install && apache2-foreground"
+
+Voir aussi
+[stackoverflow](https://stackoverflow.com/questions/43769756/composer-install-doesnt-install-packages-when-running-in-dockerfile)
